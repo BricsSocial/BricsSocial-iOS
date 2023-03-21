@@ -1,8 +1,8 @@
 //
 //  ContentView.swift
-//  BricsScoial
+//  BricsSocial
 //
-//  Created by Samarenko Andrey on 11.03.2023.
+//  Created by Samarenko Andrey on 21.03.2023.
 //
 
 import SwiftUI
