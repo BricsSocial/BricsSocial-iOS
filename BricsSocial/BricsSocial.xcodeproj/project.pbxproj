@@ -34,6 +34,11 @@
 		7B040F4B29C9CF4E00E3BC2E /* DataValidationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B040F4929C9CF4E00E3BC2E /* DataValidationHandler.swift */; };
 		7B040F5129C9D91200E3BC2E /* UserDataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B040F5029C9D91200E3BC2E /* UserDataHandler.swift */; };
 		7B040F5429C9FAF500E3BC2E /* ProfilePageInputTextFieldViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B040F5329C9FAF500E3BC2E /* ProfilePageInputTextFieldViewModelFactory.swift */; };
+		7BBBEA6029CB5D0A00DC5072 /* SearchPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BBBEA5F29CB5D0A00DC5072 /* SearchPageView.swift */; };
+		7BBBEA6229CB613F00DC5072 /* CompanyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BBBEA6129CB613F00DC5072 /* CompanyModel.swift */; };
+		7BBBEA6429CB619600DC5072 /* SearchPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BBBEA6329CB619600DC5072 /* SearchPageViewModel.swift */; };
+		7BBBEA6629CB62E300DC5072 /* StackCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BBBEA6529CB62E300DC5072 /* StackCardView.swift */; };
+		7BDEE3AD29CC212E00BB5E3D /* CompanyCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BDEE3AC29CC212E00BB5E3D /* CompanyCardView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -65,6 +70,11 @@
 		7B040F4929C9CF4E00E3BC2E /* DataValidationHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataValidationHandler.swift; sourceTree = "<group>"; };
 		7B040F5029C9D91200E3BC2E /* UserDataHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataHandler.swift; sourceTree = "<group>"; };
 		7B040F5329C9FAF500E3BC2E /* ProfilePageInputTextFieldViewModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePageInputTextFieldViewModelFactory.swift; sourceTree = "<group>"; };
+		7BBBEA5F29CB5D0A00DC5072 /* SearchPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPageView.swift; sourceTree = "<group>"; };
+		7BBBEA6129CB613F00DC5072 /* CompanyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyModel.swift; sourceTree = "<group>"; };
+		7BBBEA6329CB619600DC5072 /* SearchPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPageViewModel.swift; sourceTree = "<group>"; };
+		7BBBEA6529CB62E300DC5072 /* StackCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackCardView.swift; sourceTree = "<group>"; };
+		7BDEE3AC29CC212E00BB5E3D /* CompanyCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyCardView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +128,7 @@
 		7B040F0829C9CF1700E3BC2E /* PresentationLayer */ = {
 			isa = PBXGroup;
 			children = (
+				7BBBEA5B29CB5C9800DC5072 /* 3_SearchPage */,
 				7B040F0929C9CF1700E3BC2E /* 1_MainPage */,
 				7B040F0B29C9CF1700E3BC2E /* 2_ProfilePage */,
 				7B040F2129C9CF1700E3BC2E /* Shared */,
@@ -328,6 +339,42 @@
 			path = Factories;
 			sourceTree = "<group>";
 		};
+		7BBBEA5B29CB5C9800DC5072 /* 3_SearchPage */ = {
+			isa = PBXGroup;
+			children = (
+				7BBBEA5E29CB5CC800DC5072 /* View */,
+				7BBBEA5D29CB5CB000DC5072 /* ViewModel */,
+				7BBBEA5C29CB5CAB00DC5072 /* Model */,
+			);
+			path = 3_SearchPage;
+			sourceTree = "<group>";
+		};
+		7BBBEA5C29CB5CAB00DC5072 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				7BBBEA6129CB613F00DC5072 /* CompanyModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		7BBBEA5D29CB5CB000DC5072 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				7BBBEA6329CB619600DC5072 /* SearchPageViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		7BBBEA5E29CB5CC800DC5072 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				7BBBEA5F29CB5D0A00DC5072 /* SearchPageView.swift */,
+				7BBBEA6529CB62E300DC5072 /* StackCardView.swift */,
+				7BDEE3AC29CC212E00BB5E3D /* CompanyCardView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -418,8 +465,13 @@
 				7B040F2C29C9CF1700E3BC2E /* MainPageView.swift in Sources */,
 				7B040F3829C9CF1700E3BC2E /* ProfilePageViewModel.swift in Sources */,
 				7B040F5429C9FAF500E3BC2E /* ProfilePageInputTextFieldViewModelFactory.swift in Sources */,
+				7BBBEA6629CB62E300DC5072 /* StackCardView.swift in Sources */,
 				7B040F4B29C9CF4E00E3BC2E /* DataValidationHandler.swift in Sources */,
+				7BBBEA6029CB5D0A00DC5072 /* SearchPageView.swift in Sources */,
 				7B040F3229C9CF1700E3BC2E /* GeneralInfoViewModel.swift in Sources */,
+				7BBBEA6429CB619600DC5072 /* SearchPageViewModel.swift in Sources */,
+				7BBBEA6229CB613F00DC5072 /* CompanyModel.swift in Sources */,
+				7BDEE3AD29CC212E00BB5E3D /* CompanyCardView.swift in Sources */,
 				7B040F3429C9CF1700E3BC2E /* GeneralInfoView.swift in Sources */,
 				7B040F3929C9CF1700E3BC2E /* ProfilePageView.swift in Sources */,
 				7B040F3D29C9CF1700E3BC2E /* InputTextFieldView.swift in Sources */,

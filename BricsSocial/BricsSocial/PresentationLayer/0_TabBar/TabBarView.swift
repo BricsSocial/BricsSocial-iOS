@@ -29,10 +29,10 @@ struct TabBarView: View {
                 .tabItem {
                     Label(String.mainPageName, systemImage: String.mainPageIconName)
                 }
-//            ContentView()
-//                .tabItem {
-//                    Label(String.searchPageName, systemImage: String.searchPageIconName)
-//                }
+            SearchPageView()
+                .tabItem {
+                    Label(String.searchPageName, systemImage: String.searchPageIconName)
+                }
 //            ContentView()
 //                .tabItem {
 //                    Label(String.notificationPageName, systemImage: String.notificationPageIconName)
