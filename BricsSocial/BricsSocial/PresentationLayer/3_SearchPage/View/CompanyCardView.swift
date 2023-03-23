@@ -17,19 +17,13 @@ struct CompanyCardView: View {
                     HStack(alignment: .center) {
                         AsyncImage(
                             url: URL(string: "https://s3-symbol-logo.tradingview.com/tcs-group-holding--600.png")) { phase in
-                                switch phase {
-                                case .empty:
-                                    ProgressView()
-                                case .success(let image):
+                                if case .success(let image) = phase {
                                     image.resizable()
                                         .aspectRatio(contentMode: .fit)
-                                        .clipShape(Circle())
-                                case .failure:
-                                    Image(systemName: "photo")
-                                @unknown default:
-                                    EmptyView()
                                 }
+                                
                             }
+                            .clipShape(Circle())
                             .frame(maxWidth: 50, maxHeight: 50)
                         
                         Text(company.name)

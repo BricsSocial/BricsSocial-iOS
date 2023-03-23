@@ -20,6 +20,9 @@ struct GeneralTagsView: View {
             InputTextFieldView(viewModel: viewModel.bioFieldViewModel,
                                textFieldText: $viewModel.bioFieldText,
                                isEditable: $isEditing)
+            DescriptionTextEditorView(descriptionText: $viewModel.descriptionText,
+                                      isEditable: $isEditing)
+            .frame(idealHeight: 200)
             HStack(alignment: .center, spacing: 10) {
                 InputTextFieldView(viewModel: viewModel.skillsFieldViewModel,
                                    textFieldText: $viewModel.skillsFieldText,

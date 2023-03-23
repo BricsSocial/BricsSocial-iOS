@@ -21,9 +21,11 @@ final class ProfilePageViewModel: ObservableObject {
     // Dependencies
     private let userDataHandler: IUserDataHandler
     private let dataValidationHandler: IDataValidationHandler
+    private let profileImageHandler: IProfileImageHandler
     
     // State variables
     @Published var isEditing: Bool = false
+    @Published var profileImage: UIImage?
     
     // ViewModels
     lazy var infoViewModel = GeneralInfoViewModel(dataValidationHandler: dataValidationHandler,
@@ -43,9 +45,24 @@ final class ProfilePageViewModel: ObservableObject {
     // MARK: - Initialization
     
     init(dataValidationHandler: IDataValidationHandler,
-         userDataHandler: IUserDataHandler) {
+         userDataHandler: IUserDataHandler,
+         profileImageHandler: IProfileImageHandler) {
         self.dataValidationHandler = dataValidationHandler
         self.userDataHandler = userDataHandler
+        self.profileImageHandler = profileImageHandler
+    }
+    
+    func loadProfileView() {
+        profileImageHandler.provideProfileImage()
+        profileImage = profileImageHandler.image
+    }
+    
+    func saveProfileView(_ image: UIImage) {
+        profileImageHandler.setProfileImage(image: image)
+        DispatchQueue.main.async { [weak self] in
+            self?.profileImage = self?.profileImageHandler.image
+        }
+        
     }
 }
 

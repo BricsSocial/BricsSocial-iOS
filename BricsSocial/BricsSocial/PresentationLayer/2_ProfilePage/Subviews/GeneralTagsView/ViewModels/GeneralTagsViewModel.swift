@@ -17,12 +17,13 @@ final class GeneralTagsViewModel: ObservableObject {
     // State variables
     @Published var skillsFieldText: String = ""
     @Published var bioFieldText: String = ""
+    @Published var descriptionText: String = ""
     
     // View Models
     lazy var skillsFieldViewModel: InputTextFieldViewModel = InputTextFieldViewModel(textFieldName: "Skills",
-                                                                                   textFieldContent: "Marketing, SMM, IT...",
-                                                                                   iconName: "case.fill",
-                                                                                   textContentType: .jobTitle)
+                                                                                     textFieldContent: "Marketing, SMM, IT...",
+                                                                                     iconName: "case.fill",
+                                                                                     textContentType: .jobTitle)
     
     lazy var addButtonViewModel: RoundButtonViewModel = RoundButtonViewModel(iconName: "plus",
                                                                              foregroundColor: .white,
@@ -43,13 +44,15 @@ final class GeneralTagsViewModel: ObservableObject {
     }()
     
     // MARK: - Initialization
-
+    
     init(userDataHandler: IUserDataHandler,
          dataValidationHandler: IDataValidationHandler,
          viewModelFactory: IProfilePageViewModelFactory) {
         self.userDataHandler = userDataHandler
         self.dataValidationHandler = dataValidationHandler
         self.viewModelFactory = viewModelFactory
+        
+        descriptionText = userDataHandler.description
     }
 }
 

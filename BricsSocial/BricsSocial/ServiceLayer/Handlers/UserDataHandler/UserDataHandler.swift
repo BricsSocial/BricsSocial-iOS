@@ -12,6 +12,7 @@ struct UserData {
     var email: String
     var phone: String
     var countryISO: String
+    var description: String
     var skills: [String]
 }
 
@@ -30,6 +31,8 @@ protocol IUserDataHandler {
     var surname: String { get set }
     // Биография
     var bio: String { get set }
+    // Описание профиля пользователя
+    var description: String { get set }
     // Сохранение информации о пользователе
     func save()
 }
@@ -42,6 +45,7 @@ final class UserDataHandler: IUserDataHandler {
                                          email: "avsamarenko@gmail.com",
                                          phone: "9157922425",
                                          countryISO: "RU",
+                                         description: "Highly motivated, improving skills constantly",
                                          skills: [])
     
     // MARK: - IUserDataHandler
@@ -94,6 +98,11 @@ final class UserDataHandler: IUserDataHandler {
             guard !newValue.isEmpty else { return }
             userData.surname = newValue
         }
+    }
+    
+    var description: String {
+        get { return userData.description }
+        set { userData.description = newValue }
     }
     
     func save() {}

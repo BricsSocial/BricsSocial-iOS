@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SearchPageView: View {
     
-    @StateObject var viewModel = SearchPageViewModel()
+    @ObservedObject var viewModel: SearchPageViewModel
     
     var body: some View {
         VStack {
@@ -79,11 +79,5 @@ struct SearchPageView: View {
                                             "id": first.id,
                                             "rightSwipe": rightSwipe
         ])
-    }
-}
-
-struct SearchPageView_Previews: PreviewProvider {
-    static var previews: some View {
-        SearchPageView()
     }
 }
