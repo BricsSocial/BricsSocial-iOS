@@ -23,7 +23,6 @@ struct SearchPageView: View {
                             .font(.caption)
                             .foregroundColor(.gray)
                     } else {
-                        
                         ForEach(companies.reversed()) { company in
                             StackCardView(company: company)
                                 .environmentObject(viewModel)
