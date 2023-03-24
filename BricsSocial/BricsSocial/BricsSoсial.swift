@@ -11,8 +11,7 @@ import SwiftUI
 struct BricsScoial: App {
     var body: some Scene {
         WindowGroup {
-            ProfilePageView(viewModel: ProfilePageViewModel(dataValidationHandler: RootAssembly.serviceAssembly.dataValidationHandler,
-                                                            userDataHandler: RootAssembly.serviceAssembly.userDataHandler))
+            TabBarView()
         }
     }
 }

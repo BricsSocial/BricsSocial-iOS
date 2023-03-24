@@ -22,26 +22,25 @@ private extension String {
 }
 
 struct TabBarView: View {
-    
+    @State var currentTab = 0
     var body: some View {
-        TabView {
+        TabView(selection: $currentTab) {
             MainPageView()
                 .tabItem {
                     Label(String.mainPageName, systemImage: String.mainPageIconName)
                 }
-//            ContentView()
-//                .tabItem {
-//                    Label(String.searchPageName, systemImage: String.searchPageIconName)
-//                }
-//            ContentView()
-//                .tabItem {
-//                    Label(String.notificationPageName, systemImage: String.notificationPageIconName)
-//                }
-//            ProfilePageView()
-//                .tabItem {
-//                    Label(String.profilePageName, systemImage: String.profilePageIconName)
-//                }
-//                .padding(.bottom)
+                .tag(0)
+            SearchPageView()
+                .tabItem {
+                    Label(String.searchPageName, systemImage: String.searchPageIconName)
+                }
+                .tag(1)
+            AsyncProfilePageView()
+                .tabItem {
+                    Label(String.profilePageName, systemImage: String.profilePageIconName)
+                }
+                .tag(2)
+                .padding(.bottom)
         }
     }
 }

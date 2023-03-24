@@ -21,15 +21,3 @@ struct Tag: Identifiable, Hashable {
         return Tag(text: title, size: size.width)
     }
 }
-
-final class TagsViewModel: ObservableObject {
-    
-    // Observed Properties
-    @Published var tags: [Tag]
-    
-    // MARK: - Initialization
-    
-    init(titles: [String]) {
-        self.tags = titles.map(Tag.makeTag(from:))
-    }
-}

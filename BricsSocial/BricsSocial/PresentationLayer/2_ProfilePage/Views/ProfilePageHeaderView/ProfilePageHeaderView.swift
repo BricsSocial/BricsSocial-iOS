@@ -13,11 +13,13 @@ struct ProfilePageHeaderView: View {
     
     var body: some View {
         HStack {
-            ProfilePhotoView()
+            ProfilePhotoView(viewModel: viewModel)
             VStack(alignment: .leading, spacing: 5) {
-                Text("\(viewModel.infoViewModel.nameInputTextViewModel.textFieldContent) \(viewModel.infoViewModel.surnameInputTextViewModel.textFieldContent)")
+                Text((viewModel.textFieldViewModel(.name).textFieldContent)
+                + " "
+                + viewModel.textFieldViewModel(.surname).textFieldContent)
                     .font(.system(size: 20, weight: .black, design: .rounded))
-                Text(viewModel.tagsViewModel.bioFieldViewModel.textFieldContent)
+                Text(viewModel.textFieldViewModel(.bio).textFieldContent)
                     .font(.subheadline)
             }
         }

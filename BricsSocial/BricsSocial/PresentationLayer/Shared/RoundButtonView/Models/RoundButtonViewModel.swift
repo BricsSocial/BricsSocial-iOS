@@ -16,6 +16,7 @@ final class RoundButtonViewModel: ObservableObject {
     let disabledBackgroundColor: Color
     let iconSide: CGFloat
     let buttonSide: CGFloat
+    let isDisabled: () -> Bool
     let action: () -> Void
     
     // MARK: - Initialization
@@ -26,6 +27,7 @@ final class RoundButtonViewModel: ObservableObject {
          disabledBackgroundColor: Color,
          iconSide: CGFloat,
          buttonSide: CGFloat,
+         isDisabled: @escaping () -> Bool,
          action: @escaping () -> Void) {
         self.iconName = iconName
         self.foregroundColor = foregroundColor
@@ -33,6 +35,7 @@ final class RoundButtonViewModel: ObservableObject {
         self.disabledBackgroundColor = disabledBackgroundColor
         self.iconSide = iconSide
         self.buttonSide = buttonSide
+        self.isDisabled = isDisabled
         self.action = action
     }
 }

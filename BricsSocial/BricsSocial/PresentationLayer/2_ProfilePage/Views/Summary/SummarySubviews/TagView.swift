@@ -13,7 +13,7 @@ struct TagView: View {
     @Namespace var animation
     
     // Models
-    @ObservedObject var viewModel: TagsViewModel
+    @Binding var viewModel: [Tag]
     
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
@@ -37,7 +37,7 @@ struct TagView: View {
     // MARK: - Private
     
     private func getIndex(tag: Tag) -> Int {
-        return viewModel.tags.firstIndex { currentTag in
+        return viewModel.firstIndex { currentTag in
             return tag.id == currentTag.id
         } ?? 0
     }
@@ -49,7 +49,7 @@ struct TagView: View {
         var totalWidth: CGFloat = 0
         let screenWidth: CGFloat = UIScreen.main.bounds.width
         
-        viewModel.tags.forEach { tag in
+        viewModel.forEach { tag in
             totalWidth += tag.size + 40
             
             if totalWidth >= screenWidth {
@@ -84,7 +84,7 @@ struct TagView: View {
             .contentShape(.contextMenuPreview, Capsule())
             .contextMenu {
                 Button("Delete \(tag.text)") {
-                    viewModel.tags.remove(at: getIndex(tag: tag))
+                    viewModel.remove(at: getIndex(tag: tag))
                 }
             }
             .matchedGeometryEffect(id: tag.id, in: animation)

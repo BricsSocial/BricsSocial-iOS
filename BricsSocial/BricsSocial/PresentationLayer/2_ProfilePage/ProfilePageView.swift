@@ -12,8 +12,22 @@ enum ProfileSection : String, CaseIterable {
     case professional = "Summary"
 }
 
-struct ProfilePageView: View {
+struct AsyncProfilePageView: View {
+    
+    @StateObject var viewModel: ProfilePageViewModel = ProfilePageViewModel(dataValidationHandler: RootAssembly.serviceAssembly.dataValidationHandler,
+                                                                            userDataHandler: RootAssembly.serviceAssembly.userDataHandler,
+                                                                            profileImageHandler: RootAssembly.serviceAssembly.profileImageHandler,
+                                                                            inputTextFieldViewModelFactory: InputTextFieldViewModelFactory(dataValidationHandler: RootAssembly.serviceAssembly.dataValidationHandler,
+                                                                                                                                           userDataHandler: RootAssembly.serviceAssembly.userDataHandler))
+    
+    var body: some View {
+        AsyncContentView(source: viewModel, content: { _ in
+            ProfilePageView(viewModel: viewModel)
+        })
+    }
+}
 
+struct ProfilePageView: View {
     // States
     @State var segmentationSelection : ProfileSection = .general
         
@@ -36,12 +50,12 @@ struct ProfilePageView: View {
                     
                     switch segmentationSelection {
                     case .general:
-                        GeneralInfoView(isEditing: $viewModel.isEditing,
-                                        viewModel: viewModel.infoViewModel)
+                        GeneralView()
+                            .environmentObject(viewModel)
                             .padding(.top, 15)
                     case .professional:
-                        GeneralTagsView(isEditing: $viewModel.isEditing,
-                                        viewModel: viewModel.tagsViewModel)
+                        SummaryView()
+                            .environmentObject(viewModel)
                             .padding(.top, 15)
                     }
                 }
@@ -52,7 +66,8 @@ struct ProfilePageView: View {
             .overlay(
                 VStack {
                     Spacer(minLength: geometry.size.height - 50)
-                    EditButtonView(viewModel: viewModel)
+                    EditButtonView()
+                        .environmentObject(viewModel)
                         .padding(.horizontal)
                 }
             )
