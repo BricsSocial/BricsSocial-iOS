@@ -12,62 +12,71 @@ struct SearchPageView: View {
     @StateObject var viewModel: SearchPageViewModel = SearchPageViewModel()
     
     var body: some View {
-        VStack {
-            Text("BRICS")
-                .font(.title.bold())
-            
-            ZStack {
-                if let companies = viewModel.displayingCompanies {
-                    if companies.isEmpty {
-                        Text("Come back later we can find more companies for you")
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                    } else {
-                        ForEach(companies.reversed()) { company in
-                            StackCardView(company: company)
-                                .environmentObject(viewModel)
+        GeometryReader() { geometry in
+            ScrollView(showsIndicators: false) {
+                VStack {
+                    Text("BRICS")
+                        .font(.title.bold())
+                    ZStack {
+                        if let companies = viewModel.displayingCompanies {
+                            if companies.isEmpty {
+                                Text("Come back later we can find more companies for you")
+                                    .font(.caption)
+                                    .foregroundColor(.gray)
+                            } else {
+                                ForEach(companies.reversed()) { company in
+                                    StackCardView(company: company)
+                                        .environmentObject(viewModel)
+                                }
+                            }
+                        } else {
+                            ProgressView()
                         }
                     }
-                } else {
-                    ProgressView()
+                    .padding(.vertical)
+                    .padding(.top, 30)
+                    .padding()
+                    .frame(height: geometry.size.height - 150)
+                    
+                    HStack(spacing: 15) {
+                        
+                        Button {
+                            doSwipe()
+                        } label: {
+                            Image(systemName: "xmark")
+                                .font(.system(size: 15, weight: .bold))
+                                .foregroundColor(.white)
+                                .shadow(radius: 5)
+                                .padding(13)
+                                .background(Color.red)
+                                .clipShape(Circle())
+                        }
+                        
+                        Button {
+                            doSwipe(rightSwipe: true)
+                        } label: {
+                            Image(systemName: "checkmark")
+                                .font(.system(size: 15, weight: .bold))
+                                .foregroundColor(.white)
+                                .shadow(radius: 5)
+                                .padding(13)
+                                .background(Color.green)
+                                .clipShape(Circle())
+                        }
+                    }
+                    .padding(.bottom)
+                    .disabled(viewModel.displayingCompanies?.isEmpty ?? false)
+                    .opacity((viewModel.displayingCompanies?.isEmpty ?? false) ? 0.6 : 1)
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
-            .padding(.vertical)
-            .padding(.top, 30)
-            .padding()
-            .frame(maxHeight: .infinity)
-            
-            HStack(spacing: 15) {
-                
-                Button {
-                    doSwipe()
-                } label: {
-                    Image(systemName: "xmark")
-                        .font(.system(size: 15, weight: .bold))
-                        .foregroundColor(.white)
-                        .shadow(radius: 5)
-                        .padding(13)
-                        .background(Color.red)
-                        .clipShape(Circle())
-                }
-                
-                Button {
-                    doSwipe(rightSwipe: true)
-                } label: {
-                    Image(systemName: "checkmark")
-                        .font(.system(size: 15, weight: .bold))
-                        .foregroundColor(.white)
-                        .shadow(radius: 5)
-                        .padding(13)
-                        .background(Color.green)
-                        .clipShape(Circle())
-                }
-            }
-            .padding(.bottom)
-            .disabled(viewModel.displayingCompanies?.isEmpty ?? false)
-            .opacity((viewModel.displayingCompanies?.isEmpty ?? false) ? 0.6 : 1)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        .refreshable {
+            do {
+                   // Sleep for 2 seconds
+                   try await Task.sleep(nanoseconds: 2 * 1_000_000_000)
+                 } catch {}
+        }
     }
     
     func doSwipe(rightSwipe: Bool = false) {
@@ -78,6 +87,12 @@ struct SearchPageView: View {
                                         userInfo: [
                                             "id": first.id,
                                             "rightSwipe": rightSwipe
-        ])
+                                        ])
+    }
+}
+
+struct SearchPageView_Previews: PreviewProvider {
+    static var previews: some View {
+        SearchPageView()
     }
 }

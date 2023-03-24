@@ -18,7 +18,13 @@ final class SearchPageViewModel: ObservableObject {
                    name: "Tinkoff",
                    description: "Financial ecosystem offers a full range of financial and lifestyle services for individuals and businesses via its mobile app and web interface. At the core of the ecosystem is Tinkoff Bank, one of the world’s biggest online banks with over 20 million customers.",
                    logo: "https://telekomdom.com/wp-content/uploads/2022/08/tinkoff-id--1024x572.png",
-                   countryId: 1)
+                   countryId: 1),
+           Company(id: 2,
+                   name: "Tinkoff",
+                   description: "Financial ecosystem offers a full range of financial and lifestyle services for individuals and businesses via its mobile app and web interface. At the core of the ecosystem is Tinkoff Bank, one of the world’s biggest online banks with over 20 million customers.",
+                   logo: "https://telekomdom.com/wp-content/uploads/2022/08/tinkoff-id--1024x572.png",
+                   countryId: 2),
+           
         ]
         
         displayingCompanies = fetchedCompanies

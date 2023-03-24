@@ -38,7 +38,7 @@ struct EditButtonView: View {
                     .onTapGesture {
                         withAnimation {
                             if viewModel.isDataValid {
-                                viewModel.resetUserInfo()
+                                viewModel.saveUserInfo()
                                 viewModel.isEditing.toggle()
                             } else {
                                 isAlertPresented.toggle()
@@ -64,8 +64,8 @@ struct EditButtonView: View {
                     )
                     .onTapGesture {
                         withAnimation {
-                            viewModel.resetUserInfo()
                             viewModel.isEditing.toggle()
+                            viewModel.resetUserInfo()
                         }
                     }
             }
