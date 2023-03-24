@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SearchPageView: View {
     
-    @ObservedObject var viewModel: SearchPageViewModel
+    @StateObject var viewModel: SearchPageViewModel = SearchPageViewModel()
     
     var body: some View {
         VStack {

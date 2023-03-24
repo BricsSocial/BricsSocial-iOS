@@ -13,23 +13,24 @@ private extension Color {
 }
 
 struct CountryPickerView: View {
+    
     // View Model
-    @ObservedObject var viewModel: CountryPickerViewModel
+    @Binding var viewModel: Country?
     
     // Binding Variables
     @Binding var isEditable: Bool
     
     // Private
-    private let dropDownList = CountryPickerViewModel.countries
+    private let dropDownList = Country.allCountries
     
     var body: some View {
         Menu {
             ForEach(dropDownList, id: \.self) { client in
                 Button(action: {
-                    viewModel.country = client
+                    viewModel = client
                 }) {
                     HStack {
-                        Text(client.name + " " + client.phoneCode)
+                        Text(client.name + " " + "(+\(client.phoneCode))")
                             .foregroundColor(.black)
                         Spacer()
                         Image(client.flag)
@@ -49,14 +50,14 @@ struct CountryPickerView: View {
                     .zIndex(1)
                 
                 HStack {
-                    Image(viewModel.country.flag)
+                    Image(viewModel?.flag ?? "")
                         .resizable()
                         .clipShape(Circle())
                         .scaledToFill()
                         .frame(width: 20, height: 20)
                         .padding(.trailing, 15)
                        
-                    Text(viewModel.country.name + " " + viewModel.country.phoneCode)
+                    Text((viewModel?.name ?? "") + " " + (viewModel?.phoneCode ?? ""))
                         .font(Font.body.weight(.medium))
                         .foregroundColor(Color.lightGrayColor)
                     

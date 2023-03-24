@@ -9,7 +9,7 @@ import SwiftUI
 
 struct EditButtonView: View {
     
-    @ObservedObject var viewModel: ProfilePageViewModel
+    @EnvironmentObject var viewModel: ProfilePageViewModel
     
     // State variables
     @State var isAlertPresented: Bool = false
@@ -38,8 +38,8 @@ struct EditButtonView: View {
                     .onTapGesture {
                         withAnimation {
                             if viewModel.isDataValid {
+                                viewModel.resetUserInfo()
                                 viewModel.isEditing.toggle()
-                                viewModel.save()
                             } else {
                                 isAlertPresented.toggle()
                             }
@@ -64,8 +64,8 @@ struct EditButtonView: View {
                     )
                     .onTapGesture {
                         withAnimation {
+                            viewModel.resetUserInfo()
                             viewModel.isEditing.toggle()
-                            viewModel.reset()
                         }
                     }
             }

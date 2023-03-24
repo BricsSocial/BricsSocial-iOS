@@ -22,25 +22,24 @@ private extension String {
 }
 
 struct TabBarView: View {
-    
-    @StateObject var profilePageViewModel = ProfilePageViewModel(dataValidationHandler: RootAssembly.serviceAssembly.dataValidationHandler,
-                                                                 userDataHandler: RootAssembly.serviceAssembly.userDataHandler,
-                                                                 profileImageHandler: RootAssembly.serviceAssembly.profileImageHandler)
-    @StateObject var searchPageViewModel = SearchPageViewModel()
+    @State var currentTab = 0
     var body: some View {
-        TabView {
+        TabView(selection: $currentTab) {
             MainPageView()
                 .tabItem {
                     Label(String.mainPageName, systemImage: String.mainPageIconName)
                 }
-            SearchPageView(viewModel: searchPageViewModel)
+                .tag(0)
+            SearchPageView()
                 .tabItem {
                     Label(String.searchPageName, systemImage: String.searchPageIconName)
                 }
-            ProfilePageView(viewModel: profilePageViewModel)
+                .tag(1)
+            AsyncProfilePageView()
                 .tabItem {
                     Label(String.profilePageName, systemImage: String.profilePageIconName)
                 }
+                .tag(2)
                 .padding(.bottom)
         }
     }

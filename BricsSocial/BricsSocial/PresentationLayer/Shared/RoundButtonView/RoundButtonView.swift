@@ -10,14 +10,11 @@ import SwiftUI
 struct RoundButtonView: View {
     
     // Models
-    @ObservedObject var viewModel: RoundButtonViewModel
-    
-    // States
-    var isDisabled: Bool
+    var viewModel: RoundButtonViewModel
     
     var body: some View {
         Button(action: {
-            guard !isDisabled else { return }
+            guard !viewModel.isDisabled() else { return }
             viewModel.action()
         },
                label: {
@@ -26,10 +23,10 @@ struct RoundButtonView: View {
                 .bold()
                 .foregroundColor(viewModel.foregroundColor)
                 .frame(width: viewModel.iconSide, height: viewModel.iconSide)
-                .background(Circle().fill(isDisabled
+                .background(Circle().fill(viewModel.isDisabled()
                                           ? viewModel.disabledBackgroundColor
                                           : viewModel.backgroundColor)
                     .frame(width: viewModel.buttonSide, height: viewModel.buttonSide))
-        }).disabled(isDisabled)
+        }).disabled(viewModel.isDisabled())
     }
 }

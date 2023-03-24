@@ -44,7 +44,7 @@ struct ProfilePhotoView: View {
                                             guard let data = data,
                                                   let image = UIImage(data: data)
                                             else { return }
-                                            viewModel.saveProfileView(image)
+                                            // viewModel.saveProfileView(image)
                                         case .failure(let error):
                                             RootAssembly.coreAssembly.logger.log(.error, arguments: "failed to load profile picture",
                                                                                  error.localizedDescription)
@@ -58,7 +58,7 @@ struct ProfilePhotoView: View {
                     }
             )
             .onAppear {
-                viewModel.loadProfileView()
+                // viewModel.loadProfileView()
             }
             .animation(.easeInOut, value: viewModel.profileImage)
     }
