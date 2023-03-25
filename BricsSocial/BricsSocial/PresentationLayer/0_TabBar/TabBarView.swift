@@ -35,11 +35,17 @@ struct TabBarView: View {
                     Label(String.searchPageName, systemImage: String.searchPageIconName)
                 }
                 .tag(1)
+            OffersListView()
+                .tabItem {
+                    Label(String.notificationPageName,
+                          systemImage: String.notificationPageIconName)
+                }
+                .tag(2)
             AsyncProfilePageView()
                 .tabItem {
                     Label(String.profilePageName, systemImage: String.profilePageIconName)
                 }
-                .tag(2)
+                .tag(3)
                 .padding(.bottom)
         }
     }
