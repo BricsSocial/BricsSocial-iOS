@@ -26,7 +26,7 @@ struct GeneralView: View {
             InputTextFieldView(viewModel: viewModel.textFieldViewModel(.phone),
                                textFieldText: $viewModel.phoneFieldText,
                                isEditable: $viewModel.isEditing)
-            CountryPickerView(viewModel: $viewModel.country,
+            CountryPickerView(chosenCountry: $viewModel.country,
                               isEditable: $viewModel.isEditing)
         }
     }

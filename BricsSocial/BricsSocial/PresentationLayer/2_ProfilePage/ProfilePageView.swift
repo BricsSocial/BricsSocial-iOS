@@ -20,7 +20,7 @@ struct AsyncProfilePageView: View {
                                                                             specialistInfoService: RootAssembly.serviceAssembly.specialistInfoService)
     
     var body: some View {
-        AsyncContentView(source: viewModel, content: { _ in
+        AsyncContentView(source: viewModel, content: {
             ProfilePageView(viewModel: viewModel)
         })
     }

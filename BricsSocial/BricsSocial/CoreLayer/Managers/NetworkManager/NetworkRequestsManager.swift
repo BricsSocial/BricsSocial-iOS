@@ -94,10 +94,10 @@ final class NetworkRequestsManager: INetworkRequestsManager {
                     Logger.shared.log(.warning, arguments: "[NETWORK: 200] FAILED TO PARSE DATA: \(String(decoding: data, as: UTF8.self))")
                     return .failure(.parseFailed)
                 }
-                Logger.shared.log(.success, arguments: "[NETWORK] REQUEST PROCESSED SUCCESSFULLY: \(request.url)")
+                Logger.shared.log(.success, arguments: "[NETWORK] REQUEST PROCESSED SUCCESSFULLY: \(request.url)", String(decoding: data, as: UTF8.self))
                 return .success(model)
             case 400:
-                Logger.shared.log(.error, arguments: "[NETWORK: 400] BAD REQUEST: \(request.url)")
+                Logger.shared.log(.error, arguments: "[NETWORK: 400] BAD REQUEST: \(request.url)", String(decoding: data, as: UTF8.self))
                 return .failure(.badRequest)
             case 401:
                 Logger.shared.log(.error, arguments: "[NETWORK: 401] UNAUTHORIZED REQUEST: \(request.url)")
