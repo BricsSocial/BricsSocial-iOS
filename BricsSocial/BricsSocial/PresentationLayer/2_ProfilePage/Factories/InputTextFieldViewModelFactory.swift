@@ -53,14 +53,19 @@ final class InputTextFieldViewModelFactory: IInputTextFieldViewModelFactory {
         
     // Dependencies
     private let dataValidationHandler: IDataValidationHandler
-    private let userDataHandler: IUserDataHandler
+    private let specialistInfoService: ISpecialistInfoService
+    
+    // Private
+    private var specialistInfo: Specialist? {
+        specialistInfoService.specialist
+    }
     
     // MARK: - Initialization
     
     init(dataValidationHandler: IDataValidationHandler,
-         userDataHandler: IUserDataHandler) {
+         specialistInfoService: ISpecialistInfoService) {
         self.dataValidationHandler = dataValidationHandler
-        self.userDataHandler = userDataHandler
+        self.specialistInfoService = specialistInfoService
     }
     
     // MARK: - IInputTextFieldViewModelFactory
@@ -69,31 +74,31 @@ final class InputTextFieldViewModelFactory: IInputTextFieldViewModelFactory {
         switch type {
         case .name:
             return InputTextFieldViewModel(textFieldName: String.nameFieldName,
-                                           textFieldContent: userDataHandler.name,
+                                           textFieldContent: specialistInfo?.firstName ?? "",
                                            iconName: String.nameIconName,
                                            textContentType: .name,
                                            validation: dataValidationHandler.validateNameOrSurname(rawValue:))
         case .bio:
             return InputTextFieldViewModel(textFieldName: String.bioFieldName,
-                                           textFieldContent: userDataHandler.bio,
+                                           textFieldContent: specialistInfo?.bio ?? "",
                                            iconName: String.bioIconName,
                                            textContentType: .name,
                                            validation: dataValidationHandler.validateBio(rawBio:))
         case .surname:
             return InputTextFieldViewModel(textFieldName: String.surnameFieldName,
-                                           textFieldContent: userDataHandler.surname,
+                                           textFieldContent: specialistInfo?.lastName ?? "",
                                            iconName: String.surnameIconName,
                                            textContentType: .name,
                                            validation: dataValidationHandler.validateNameOrSurname(rawValue:))
         case .email:
             return InputTextFieldViewModel(textFieldName: String.emailFieldName,
-                                           textFieldContent: userDataHandler.email,
+                                           textFieldContent: specialistInfo?.email ?? "",
                                            iconName: String.emailIconName,
                                            textContentType: .emailAddress,
                                            validation: dataValidationHandler.validateEmail(rawEmail:))
         case .phone:
             return InputTextFieldViewModel(textFieldName: String.phoneFieldName,
-                                           textFieldContent: userDataHandler.phone,
+                                           textFieldContent: "8 995 792 24 25",
                                            iconName: String.phoneIconName,
                                            textContentType: .telephoneNumber,
                                            validation: dataValidationHandler.validatePhone(rawPhone:))

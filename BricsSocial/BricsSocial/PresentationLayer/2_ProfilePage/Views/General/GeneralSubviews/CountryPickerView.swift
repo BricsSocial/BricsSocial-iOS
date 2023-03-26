@@ -15,13 +15,13 @@ private extension Color {
 struct CountryPickerView: View {
     
     // View Model
-    @Binding var viewModel: Country?
+    @Binding var viewModel: CountryModel?
     
     // Binding Variables
     @Binding var isEditable: Bool
     
     // Private
-    private let dropDownList = Country.allCountries
+    private let dropDownList:[CountryModel] = CountryModel.allCountries
     
     var body: some View {
         Menu {

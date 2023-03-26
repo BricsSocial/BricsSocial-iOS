@@ -22,11 +22,11 @@ class BaseRequest {
        }
     
     // Заголовки запроса
-    var headers: [String: String] {
+    var headers: [String: String] = {
         return [
             "content-type": "application/json"
         ]
-    }
+    }()
     
     // Основной url для построения запросов
     var baseUrl: String {
@@ -72,15 +72,17 @@ class BaseRequest {
 extension BaseRequest {
     
     var urlRequest: URLRequest? {
-        guard let url = URL(string: url),
-              let httpBody = try? JSONSerialization.data(withJSONObject: self.bodyParameters, options: .prettyPrinted)
-        else { return nil }
+        guard let url = URL(string: url) else { return nil }
         
         var request = URLRequest(url: url)
-        
+    
         request.httpMethod = requestType.rawValue
         request.allHTTPHeaderFields = headers
-        request.httpBody = httpBody
+        
+        if requestType != .GET,
+           let httpBody = try? JSONSerialization.data(withJSONObject: self.bodyParameters, options: .prettyPrinted) {
+            request.httpBody = httpBody
+        }
         
         return request
     }

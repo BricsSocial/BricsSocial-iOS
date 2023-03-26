@@ -10,11 +10,10 @@ import SwiftUI
 protocol LoadableObject: ObservableObject {
     associatedtype Output
     var state: LoadingState<Output> { get }
-    func load()
+    func load() async
 }
 
 enum LoadingState<Value> {
-    case idle
     case loading
     case failed(Error)
     case loaded(Value)
@@ -37,11 +36,9 @@ struct AsyncContentView<Source: LoadableObject,
 
     var body: some View {
         switch source.state {
-        case .idle:
-            Color.clear.onAppear(perform: source.load)
         case .loading:
-            loadingView
-        case .failed(let error):
+            loadingView.task { await source.load() }
+        case .failed:
             EmptyView()
         case .loaded(let output):
             content(output)

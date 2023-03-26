@@ -7,14 +7,14 @@
 
 import Foundation
 
-enum ReplyStatus: Int {
+enum ReplyStatus: Int, Codable {
     case pending
     case approved
     case rejected
 }
 
-// Добавить отклик на вакансию
-final class AddReplyRequest: BaseRequest {
+// Откликнуться на отклик на себя
+final class ReplyStatusChageRequest: BaseRequest {
     
     // Private
     private let replyId: Int

@@ -38,8 +38,12 @@ struct EditButtonView: View {
                     .onTapGesture {
                         withAnimation {
                             if viewModel.isDataValid {
-                                viewModel.saveUserInfo()
-                                viewModel.isEditing.toggle()
+                                Task {
+                                    _ = await viewModel.save()
+                                    DispatchQueue.main.async {
+                                        viewModel.isEditing.toggle()
+                                    }
+                                }
                             } else {
                                 isAlertPresented.toggle()
                             }

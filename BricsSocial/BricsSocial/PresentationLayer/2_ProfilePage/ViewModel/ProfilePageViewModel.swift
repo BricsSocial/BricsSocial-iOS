@@ -8,9 +8,9 @@
 import SwiftUI
 
 private extension String {
-    func notEmptyString(newStr: String?) -> String {
-        if let newStr = newStr, !newStr.isEmpty {
-            return newStr
+    func nilOrString() -> String? {
+        if self.isEmpty {
+            return nil
         } else {
             return self
         }
@@ -20,14 +20,19 @@ private extension String {
 final class ProfilePageViewModel: ObservableObject {
     
     // Dependencies
-    private var userDataHandler: IUserDataHandler
     private let dataValidationHandler: IDataValidationHandler
     private let inputTextFieldViewModelFactory: IInputTextFieldViewModelFactory
     private let profileImageHandler: IProfileImageHandler
+    private let specialistInfoService: ISpecialistInfoService
+    
+    // Private
+    var cachedSpecialistInfo: Specialist? {
+        specialistInfoService.specialist
+    }
     
     // State variables
     @Published var isEditing: Bool = false
-    @Published var state: LoadingState<UserData> = .idle
+    @Published var state: LoadingState<Specialist> = .loading
     
     // Input Data
     @Published var profileImage: UIImage?
@@ -44,7 +49,7 @@ final class ProfilePageViewModel: ObservableObject {
     @Published var surnameFieldText: String  = String()
     @Published var mailFieldText   : String  = String()
     @Published var phoneFieldText  : String  = String()
-    @Published var country         : Country?
+    @Published var country         : CountryModel?
     
     // Computed Properties
     var addButtonViewModel: RoundButtonViewModel {
@@ -53,47 +58,56 @@ final class ProfilePageViewModel: ObservableObject {
     
     var isDataValid: Bool {
         [
-            dataValidationHandler.validateNameOrSurname(rawValue: userDataHandler.name.notEmptyString(newStr: nameFieldText)),
-            dataValidationHandler.validateNameOrSurname(rawValue: userDataHandler.surname.notEmptyString(newStr: surnameFieldText)),
-            dataValidationHandler.validateEmail(rawEmail: userDataHandler.email.notEmptyString(newStr: mailFieldText)),
-            dataValidationHandler.validatePhone(rawPhone: userDataHandler.phone.notEmptyString(newStr: phoneFieldText))
+           
         ].allSatisfy { $0 }
     }
     
     // MARK: - Initialization
     
     init(dataValidationHandler: IDataValidationHandler,
-         userDataHandler: IUserDataHandler,
          profileImageHandler: IProfileImageHandler,
-         inputTextFieldViewModelFactory: IInputTextFieldViewModelFactory) {
+         inputTextFieldViewModelFactory: IInputTextFieldViewModelFactory,
+         specialistInfoService: ISpecialistInfoService) {
         self.dataValidationHandler = dataValidationHandler
-        self.userDataHandler = userDataHandler
         self.profileImageHandler = profileImageHandler
         self.inputTextFieldViewModelFactory = inputTextFieldViewModelFactory
+        self.specialistInfoService = specialistInfoService
     }
     
-    func saveUserInfo() {
-        userDataHandler.name = userDataHandler.name.notEmptyString(newStr: nameFieldText)
-        userDataHandler.surname = userDataHandler.surname.notEmptyString(newStr: surnameFieldText)
-        userDataHandler.email = userDataHandler.email.notEmptyString(newStr: mailFieldText)
-        userDataHandler.phone = userDataHandler.phone.notEmptyString(newStr: phoneFieldText)
-        userDataHandler.countryISO = userDataHandler.phone.notEmptyString(newStr: country?.code)
+    func save() async -> NetworkError? {
+        guard let id = cachedSpecialistInfo?.id else { return nil }
         
-        userDataHandler.skills = tags.map { $0.text }
-        userDataHandler.bio = userDataHandler.bio.notEmptyString(newStr: bioFieldText)
-        userDataHandler.description = userDataHandler.description.notEmptyString(newStr: descriptionText)
+        let email = mailFieldText.nilOrString()
+        let firstName = nameFieldText.nilOrString()
+        let lastName = surnameFieldText.nilOrString()
+        let bio = bioFieldText.nilOrString()
+        let about = descriptionText.nilOrString()
+        let skillTags: String? = nil
+        let photo: String? = nil
+        let countryId = Country(rawValue: 1)!
+        
+        let specialistInfo = Specialist(id: id,
+                                        email: email,
+                                        firstName: firstName,
+                                        lastName: lastName,
+                                        bio: bio,
+                                        about: about,
+                                        skillTags: skillTags,
+                                        photo: photo,
+                                        countryId: countryId)
+        return await specialistInfoService.updateSpecialistInfo(specialist: specialistInfo)
     }
     
     func resetUserInfo() {
         skillsFieldText  = String()
-        tags             = userDataHandler.skills.map(Tag.makeTag(from:))
+        tags             = []
         bioFieldText     = String()
-        descriptionText  = userDataHandler.description
+        descriptionText  = cachedSpecialistInfo?.about ?? ""
         nameFieldText    = String()
         surnameFieldText = String()
         mailFieldText    = String()
         phoneFieldText   = String()
-        country          = Country(regionCode: userDataHandler.countryISO)
+        country          = CountryModel(regionCode: cachedSpecialistInfo?.countryId.code ?? "RU")
     }
     
     func textFieldViewModel(_ type: InputTextViewType) -> InputTextFieldViewModel {
@@ -115,28 +129,16 @@ extension ProfilePageViewModel: IProfilePageViewModelActions {
 }
 
 extension ProfilePageViewModel: LoadableObject {
-    
-    func load() {
-        state = .loading
+
+    func load() async {
+        let error = await specialistInfoService.loadSpecialistInfo()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self]  in
-            guard let self = self else { return }
-            self.userDataHandler.userData = UserData(name: "Alexander",
-                                                     surname: "Samarenko",
-                                                     bio: "iOS-Developer",
-                                                     email: "avsamarenko_1@edu.hse.ru",
-                                                     phone: "9957922425",
-                                                     countryISO: "RU",
-                                                     description: "FUCK",
-                                                     skills: [])
-            self.state = .loaded(self.userDataHandler.userData)
-            
-            self.profileImageHandler.provideProfileImage()
-            self.profileImage = self.profileImageHandler.image
-            
-            self.country = Country(regionCode: self.userDataHandler.countryISO)
-            self.tags = self.userDataHandler.skills.map(Tag.makeTag(from:))
-            self.descriptionText = self.userDataHandler.description
+        DispatchQueue.main.async {
+            if let error = error {
+                self.state = .failed(error)
+            } else if let specialist = self.specialistInfoService.specialist {
+                self.state = .loaded(specialist)
+            }
         }
     }
 }

@@ -7,6 +7,7 @@
 
 import Foundation
 
+// Получение всех типов предложений по специалисту
 final class AllRepliesRequest: BaseRequest {
     
     // MARK: - BaseRequest

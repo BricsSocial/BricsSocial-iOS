@@ -26,7 +26,7 @@ private extension Locale {
     static let englishLocale = Locale(identifier: String.localeIdentifier)
 }
 
-struct Country: Hashable {
+struct CountryModel: Hashable {
     
     let code: String
     let name: String
@@ -44,5 +44,5 @@ struct Country: Hashable {
         self.phoneCode = phoneCode
     }
     
-    static let allCountries: [Country] = String.bricsISO.compactMap(Country.init(regionCode:))
+    static let allCountries: [CountryModel] = String.bricsISO.compactMap(CountryModel.init(regionCode:))
 }

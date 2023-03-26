@@ -28,7 +28,10 @@ protocol IKeyChainManager {
     func delete(metaInfo: KeyChainManager.MetaInfo) throws
 }
 
-final class KeyChainManager {
+final class KeyChainManager: IKeyChainManager {
+    
+    // Dependencies
+    private let logger: ILogger
     
     // Models
     struct MetaInfo {
@@ -38,10 +41,19 @@ final class KeyChainManager {
         let valueService: String
     }
     
+    // MARK: - Initialization
+    
+    init(logger: ILogger) {
+        self.logger = logger
+    }
+    
     // MARK: - IKeyChainManager
 
     func save<T: Codable>(_ value: T, metaInfo: KeyChainManager.MetaInfo) throws {
-        guard let data = try? JSONEncoder().encode(value) else { throw KeyChainManagerError.encodeError }
+        guard let data = try? JSONEncoder().encode(value) else {
+            logger.log(.error, arguments: "[KEYCHAIN] UNABLE TO ENCODE VALUE")
+            throw KeyChainManagerError.encodeError
+        }
         
         let query = [
             // Encryption enabled
@@ -59,8 +71,12 @@ final class KeyChainManager {
             // Duplicate occured
         case errSecDuplicateItem: try update(with: value, metaInfo: metaInfo)
             // Unknown error
-        default: throw KeyChainManagerError.saveError
+        default:
+            logger.log(.error, arguments: "[KEYCHAIN] UNKNOWN ERROR WHILE SAVING VALUE")
+            throw KeyChainManagerError.saveError
         }
+        
+        logger.log(.success, arguments: "[KEYCHAIN] TOKEN SUCCESSFULLY SAVED")
     }
     
     func get<T: Codable>(metaInfo: KeyChainManager.MetaInfo) throws -> T {
@@ -83,21 +99,29 @@ final class KeyChainManager {
         
         // Checking for status of an item
         switch status {
-        case errSecItemNotFound: throw KeyChainManagerError.getError(message: "NOT FOUND")
+        case errSecItemNotFound:
+            logger.log(.error, arguments: "[KEYCHAIN] UNABLE TO FIND VALUE")
+            throw KeyChainManagerError.getError(message: "NOT FOUND")
         case errSecSuccess:
             if let existingItem = item as? [String: Any],
                let valueData = existingItem[kSecValueData as String] as? Data,
                let value = try? JSONDecoder().decode(T.self, from: valueData) {
                 return value
             } else {
+                logger.log(.error, arguments: "[KEYCHAIN] UNABLE TO DECODE VALUE")
                 throw KeyChainManagerError.decodeError
             }
-        default: throw KeyChainManagerError.getError(message: "UNKNOWN ERROR")
+        default:
+            logger.log(.error, arguments: "[KEYCHAIN] UNKNOWN ERROR WHILE RECEIVING VALUE")
+            throw KeyChainManagerError.getError(message: "UNKNOWN ERROR")
         }
     }
     
     func update<T: Codable>(with value: T, metaInfo: KeyChainManager.MetaInfo) throws {
-        guard let data = try? JSONEncoder().encode(value) else { throw KeyChainManagerError.encodeError }
+        guard let data = try? JSONEncoder().encode(value) else {
+            logger.log(.error, arguments: "[KEYCHAIN] UNABLE TO ENCODE VALUE")
+            throw KeyChainManagerError.encodeError
+        }
         
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
@@ -114,8 +138,11 @@ final class KeyChainManager {
         let status = SecItemUpdate(query as CFDictionary, attributes as CFDictionary)
         
         guard case errSecSuccess = status else {
+            logger.log(.error, arguments: "[KEYCHAIN] UNKNOWN ERROR WHILE UPDATING VALUE")
             throw KeyChainManagerError.updateError
         }
+        
+        logger.log(.success, arguments: "[KEYCHAIN] TOKEN SUCCESSFULLY UPDATED")
     }
     
     func delete(metaInfo: KeyChainManager.MetaInfo) throws {
@@ -127,6 +154,7 @@ final class KeyChainManager {
         
         let status = SecItemDelete(query as CFDictionary)
         guard status == errSecSuccess || status == errSecItemNotFound else {
+            logger.log(.error, arguments: "[KEYCHAIN] UNKNOWN ERROR WHILE DELETING VALUE")
             throw KeyChainManagerError.deleteError
         }
     }
