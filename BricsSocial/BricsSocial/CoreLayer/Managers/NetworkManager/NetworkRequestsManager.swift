@@ -55,7 +55,7 @@ final class NetworkRequestsManager: INetworkRequestsManager {
             guard let httpResponse = response as? HTTPURLResponse else { return .badResponse }
             
             switch httpResponse.statusCode {
-            case 200:
+            case 200...299:
                 Logger.shared.log(.success, arguments: "[NETWORK] REQUEST PROCESSED SUCCESSFULLY: \(request.url)")
                 return nil
             case 400:
@@ -89,7 +89,7 @@ final class NetworkRequestsManager: INetworkRequestsManager {
             guard let httpResponse = response as? HTTPURLResponse else { return .failure(.badResponse) }
             
             switch httpResponse.statusCode {
-            case 200:
+            case 200...299:
                 guard let model = try? JSONDecoder().decode(type, from: data) else {
                     Logger.shared.log(.warning, arguments: "[NETWORK: 200] FAILED TO PARSE DATA: \(String(decoding: data, as: UTF8.self))")
                     return .failure(.parseFailed)

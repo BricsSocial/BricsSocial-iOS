@@ -9,9 +9,16 @@ import SwiftUI
 
 @main
 struct BricsScoial: App {
+   
+    @State var isLogged: Bool = false
+    
     var body: some Scene {
         WindowGroup {
-            TabBarView()
+            if isLogged {
+                TabBarView()
+            } else {
+                SignInView(isLoggedIn: $isLogged)
+            }
         }
     }
 }

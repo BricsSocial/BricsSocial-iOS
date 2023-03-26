@@ -28,6 +28,10 @@ private extension String {
     static let skillsFieldName: String = "Skills"
     static let skillsFieldContent: String = "Marketing, SMM, IT..."
     static let skillsIconName: String = "case.fill"
+    
+    static let passwordFieldName: String = "Password"
+    static let passwordFieldContent: String = "Enter password..."
+    static let passwordIconName: String = "lock.fill"
 }
 
 enum InputTextViewType {
@@ -37,6 +41,7 @@ enum InputTextViewType {
     case surname
     case bio
     case skills
+    case password
 }
 
 protocol IInputTextFieldViewModelFactory {
@@ -74,7 +79,7 @@ final class InputTextFieldViewModelFactory: IInputTextFieldViewModelFactory {
         switch type {
         case .name:
             return InputTextFieldViewModel(textFieldName: String.nameFieldName,
-                                           textFieldContent: specialistInfo?.firstName ?? "",
+                                           textFieldContent: specialistInfo?.firstName ?? "First Name...",
                                            iconName: String.nameIconName,
                                            textContentType: .name,
                                            validation: dataValidationHandler.validateNameOrSurname(rawValue:))
@@ -86,13 +91,13 @@ final class InputTextFieldViewModelFactory: IInputTextFieldViewModelFactory {
                                            validation: dataValidationHandler.validateBio(rawBio:))
         case .surname:
             return InputTextFieldViewModel(textFieldName: String.surnameFieldName,
-                                           textFieldContent: specialistInfo?.lastName ?? "",
+                                           textFieldContent: specialistInfo?.lastName ?? "Last Name...",
                                            iconName: String.surnameIconName,
                                            textContentType: .name,
                                            validation: dataValidationHandler.validateNameOrSurname(rawValue:))
         case .email:
             return InputTextFieldViewModel(textFieldName: String.emailFieldName,
-                                           textFieldContent: specialistInfo?.email ?? "",
+                                           textFieldContent: specialistInfo?.email ?? "Email",
                                            iconName: String.emailIconName,
                                            textContentType: .emailAddress,
                                            validation: dataValidationHandler.validateEmail(rawEmail:))
@@ -107,6 +112,12 @@ final class InputTextFieldViewModelFactory: IInputTextFieldViewModelFactory {
                                            textFieldContent: String.skillsFieldContent,
                                            iconName: String.skillsIconName,
                                            textContentType: .jobTitle,
+                                           validation: { _ in return true })
+        case .password:
+            return InputTextFieldViewModel(textFieldName: String.passwordFieldName,
+                                           textFieldContent: String.passwordFieldContent,
+                                           iconName: String.passwordIconName,
+                                           textContentType: .password,
                                            validation: { _ in return true })
         }
     }
