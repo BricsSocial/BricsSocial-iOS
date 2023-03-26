@@ -13,10 +13,6 @@ protocol INetworkHandler {
     func changeReplyStatus(replyId: Int, status: ReplyStatus) async -> NetworkError?
     // Получить отклики
     func receiveReplies() async -> Result<Array<Reply>, NetworkError>
-    // Зарегестрировать специалиста
-    func signUpSpecialist(info: SpecialistRegistrationInfo) async -> NetworkError?
-    // Войти в аккаунт специалиста
-    func signInSpecialist(email: String, password: String) async -> NetworkError?
     
     func send<Request: BaseRequest>(request: Request) async -> NetworkError?
     func send<Request: BaseRequest, Model: Decodable>(request: Request, type: Model.Type) async -> Result<Model, NetworkError>
@@ -47,33 +43,14 @@ final class NetworkHandler: INetworkHandler {
         let request = AllRepliesRequest()
         return await send(request: request, type: Array<Reply>.self)
     }
-
-    func signUpSpecialist(info: SpecialistRegistrationInfo) async -> NetworkError? {
-        let request = AddSpecialistRequest(info: info)
-        return await send(request: request)
-    }
-    
-    func signInSpecialist(email: String, password: String) async -> NetworkError? {
-        let request = LogInRequest(email: email, password: password)
-        let result = await networkManager.send(request: request, type: String.self)
-        
-        switch result {
-        case .success(let token):
-            tokenHandler.authentificationToken = token
-        case .failure(let error):
-            return error
-        }
-        
-        return nil
-    }
     
     func send<Request: BaseRequest>(request: Request) async -> NetworkError? {
-        request.headers["Authorization"] = "Bearer \(String.token)"
+        request.headers["Authorization"] = "Bearer \(tokenHandler.authentificationToken)"
         return await networkManager.send(request: request)
     }
     
     func send<Request: BaseRequest, Model: Decodable>(request: Request, type: Model.Type) async -> Result<Model, NetworkError> {
-        request.headers["Authorization"] = "Bearer \(String.token)"
+        request.headers["Authorization"] = "Bearer \(tokenHandler.authentificationToken)"
         return await networkManager.send(request: request, type: type)
     }
 }

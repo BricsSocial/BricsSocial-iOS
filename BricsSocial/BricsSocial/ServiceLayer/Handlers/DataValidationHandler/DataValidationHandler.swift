@@ -23,6 +23,8 @@ protocol IDataValidationHandler {
     func validateNameOrSurname(rawValue: String) -> Bool
     // Валидация биографии
     func validateBio(rawBio: String) -> Bool
+    // Валидация пароля пользователя
+    func validatePassword(rawPassword: String) -> Bool
 }
 
 final class DataValidationHandler: IDataValidationHandler {
@@ -48,5 +50,9 @@ final class DataValidationHandler: IDataValidationHandler {
     
     func validateBio(rawBio: String) -> Bool {
         return !rawBio.isEmpty && rawBio.count < 20
+    }
+    
+    func validatePassword(rawPassword: String) -> Bool {
+        return !rawPassword.isEmpty && rawPassword.count < 20
     }
 }

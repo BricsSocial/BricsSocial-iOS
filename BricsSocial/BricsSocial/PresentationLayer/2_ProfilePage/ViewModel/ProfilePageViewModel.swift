@@ -16,7 +16,7 @@ final class ProfilePageViewModel: ObservableObject {
     private let specialistInfoService: ISpecialistInfoService
     
     // Private
-    var cachedSpecialistInfo: Specialist? {
+    private var cachedSpecialistInfo: Specialist? {
         specialistInfoService.specialist
     }
     

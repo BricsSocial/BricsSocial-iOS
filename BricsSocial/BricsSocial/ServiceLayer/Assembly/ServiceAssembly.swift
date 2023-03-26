@@ -17,6 +17,8 @@ protocol IServiceAssembly {
     
     // Сервис для работы с данными о специалисте
     var specialistInfoService: ISpecialistInfoService { get }
+    // Сервис для работы с авторизацией пользователя в системе
+    var authService: IAuthService { get }
 }
 
 final class ServiceAssembly: IServiceAssembly {
@@ -27,4 +29,5 @@ final class ServiceAssembly: IServiceAssembly {
     lazy var networkHandler: INetworkHandler = NetworkHandler(tokenHandler: tokenHandler, networkManager: RootAssembly.coreAssembly.networkRequestsManager)
     
     lazy var specialistInfoService: ISpecialistInfoService = SpecialistInfoService(networkHandler: networkHandler)
+    lazy var authService: IAuthService = AuthService(tokenHandler: tokenHandler, networkHandler: networkHandler)
 }
