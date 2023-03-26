@@ -8,16 +8,14 @@
 import SwiftUI
 
 protocol LoadableObject: ObservableObject {
-    associatedtype Output
-    var state: LoadingState<Output> { get }
-    func load()
+    var state: LoadingState { get }
+    func load() async
 }
 
-enum LoadingState<Value> {
-    case idle
+enum LoadingState {
     case loading
+    case loaded
     case failed(Error)
-    case loaded(Value)
 }
 
 struct AsyncContentView<Source: LoadableObject,
@@ -25,11 +23,11 @@ struct AsyncContentView<Source: LoadableObject,
                         Content: View>: View {
     @ObservedObject var source: Source
     var loadingView: LoadingView
-    var content: (Source.Output) -> Content
+    var content: () -> Content
 
     init(source: Source,
          loadingView: LoadingView,
-         @ViewBuilder content: @escaping (Source.Output) -> Content) {
+         @ViewBuilder content: @escaping () -> Content) {
         self.source = source
         self.loadingView = loadingView
         self.content = content
@@ -37,14 +35,12 @@ struct AsyncContentView<Source: LoadableObject,
 
     var body: some View {
         switch source.state {
-        case .idle:
-            Color.clear.onAppear(perform: source.load)
         case .loading:
-            loadingView
-        case .failed(let error):
+            loadingView.task { await source.load() }
+        case .failed:
             EmptyView()
-        case .loaded(let output):
-            content(output)
+        case .loaded:
+            content()
         }
     }
 }
@@ -54,7 +50,7 @@ typealias DefaultProgressView = ProgressView<EmptyView, EmptyView>
 extension AsyncContentView where LoadingView == DefaultProgressView {
     init(
         source: Source,
-        @ViewBuilder content: @escaping (Source.Output) -> Content
+        @ViewBuilder content: @escaping () -> Content
     ) {
         self.init(
             source: source,

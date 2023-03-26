@@ -8,7 +8,7 @@
 import Foundation
 
 extension String {
-    static let space = ": "
+    static let space = ":"
 }
 
 protocol ILogger {
@@ -32,6 +32,6 @@ final class Logger: ILogger {
     // MARK: - ILogger
     
     func log(_ type: MessageType, arguments: String...) {
-        print(type.rawValue, String.space, arguments.map { $0.capitalized }.joined(separator: "|"))
+        print(type.rawValue, String.space, arguments.map { $0 }.joined(separator: "|"))
     }
 }

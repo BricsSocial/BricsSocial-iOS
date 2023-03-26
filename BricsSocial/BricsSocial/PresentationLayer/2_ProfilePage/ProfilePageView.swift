@@ -15,13 +15,12 @@ enum ProfileSection : String, CaseIterable {
 struct AsyncProfilePageView: View {
     
     @StateObject var viewModel: ProfilePageViewModel = ProfilePageViewModel(dataValidationHandler: RootAssembly.serviceAssembly.dataValidationHandler,
-                                                                            userDataHandler: RootAssembly.serviceAssembly.userDataHandler,
                                                                             profileImageHandler: RootAssembly.serviceAssembly.profileImageHandler,
-                                                                            inputTextFieldViewModelFactory: InputTextFieldViewModelFactory(dataValidationHandler: RootAssembly.serviceAssembly.dataValidationHandler,
-                                                                                                                                           userDataHandler: RootAssembly.serviceAssembly.userDataHandler))
+                                                                            inputTextFieldViewModelFactory: InputTextFieldViewModelFactory(dataValidationHandler: RootAssembly.serviceAssembly.dataValidationHandler, specialistInfoService: RootAssembly.serviceAssembly.specialistInfoService),
+                                                                            specialistInfoService: RootAssembly.serviceAssembly.specialistInfoService)
     
     var body: some View {
-        AsyncContentView(source: viewModel, content: { _ in
+        AsyncContentView(source: viewModel, content: {
             ProfilePageView(viewModel: viewModel)
         })
     }
@@ -61,6 +60,9 @@ struct ProfilePageView: View {
                 }
                 .padding(.horizontal, 20)
                 .padding(.bottom, 100)
+            }
+            .refreshable {
+                let error = await RootAssembly.serviceAssembly.specialistInfoService.loadSpecialistInfo()
             }
             .frame(width: UIScreen.main.bounds.width)
             .overlay(

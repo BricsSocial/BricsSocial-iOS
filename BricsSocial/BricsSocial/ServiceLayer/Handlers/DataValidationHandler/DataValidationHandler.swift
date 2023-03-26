@@ -10,6 +10,7 @@ import Foundation
 extension String {
     static let emailRegex: String = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
     static let phoneRegex: String = #"^?\(?\d{3}\)?[ -]?\d{3}[ -]?\d{4}$"#
+    static let nameOrSurnameValidation = "^(([^ ]?)(^[a-zA-Z].*[a-zA-Z]$)([^ ]?))$"
     static let selfMatchesFormat: String = "SELF MATCHES %@"
 }
 
@@ -39,9 +40,9 @@ final class DataValidationHandler: IDataValidationHandler {
     }
     
     func validateNameOrSurname(rawValue: String) -> Bool {
-        guard rawValue.count > 7, rawValue.count < 18 else { return false }
+        guard rawValue.count > 3, rawValue.count < 18 else { return false }
 
-        let predicateTest = NSPredicate(format: "SELF MATCHES %@", "^(([^ ]?)(^[a-zA-Z].*[a-zA-Z]$)([^ ]?))$")
+        let predicateTest = NSPredicate(format: String.selfMatchesFormat, String.nameOrSurnameValidation)
         return predicateTest.evaluate(with: rawValue)
     }
     
