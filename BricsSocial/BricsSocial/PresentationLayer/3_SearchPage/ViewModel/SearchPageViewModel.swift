@@ -9,32 +9,36 @@ import SwiftUI
 
 final class SearchPageViewModel: ObservableObject {
     
-    @Published var fetchedCompanies: [Company] = []
-    @Published var displayingCompanies: [Company]?
+    // Dependencies
+    private let vacanciesService: IVacanciesService
     
-    init() {
-        fetchedCompanies = [
-           Company(id: 1,
-                   name: "Tinkoff",
-                   description: "Financial ecosystem offers a full range of financial and lifestyle services for individuals and businesses via its mobile app and web interface. At the core of the ecosystem is Tinkoff Bank, one of the world’s biggest online banks with over 20 million customers.",
-                   logo: "https://telekomdom.com/wp-content/uploads/2022/08/tinkoff-id--1024x572.png",
-                   countryId: 1),
-           Company(id: 2,
-                   name: "Tinkoff",
-                   description: "Financial ecosystem offers a full range of financial and lifestyle services for individuals and businesses via its mobile app and web interface. At the core of the ecosystem is Tinkoff Bank, one of the world’s biggest online banks with over 20 million customers.",
-                   logo: "https://telekomdom.com/wp-content/uploads/2022/08/tinkoff-id--1024x572.png",
-                   countryId: 2),
-           
-        ]
-        
-        displayingCompanies = fetchedCompanies
+    // Observed values
+    @Published var displayingVacancies: [Vacancy] = []
+    
+    // MARK: - Initialization
+    
+    init(vacanciesService: IVacanciesService) {
+        self.vacanciesService = vacanciesService
     }
     
-    func getIndex(company: Company) -> Int {
-        let index = displayingCompanies?.firstIndex(where: { currentCompany in
-            return company.id == currentCompany.id
-        }) ?? 0
+    func loadVacancies() async {
+        guard displayingVacancies.isEmpty else { return }
         
+        await vacanciesService.loadFullVacanciesInfo()
+        
+        DispatchQueue.main.async {
+            self.displayingVacancies = self.vacanciesService.vacancies
+        }
+    }
+    
+    func getIndex(vacancy: Vacancy) -> Int {
+        let index = displayingVacancies.firstIndex(where: { currentVacancy in
+            return vacancy.id == currentVacancy.id
+        }) ?? 0
         return index
+    }
+    
+    func getCompany(vacancy: Vacancy) -> Company? {
+        return vacanciesService.companiesById[vacancy.companyId]
     }
 }

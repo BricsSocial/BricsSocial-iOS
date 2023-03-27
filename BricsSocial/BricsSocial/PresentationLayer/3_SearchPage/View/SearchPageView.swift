@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SearchPageView: View {
     
-    @StateObject var viewModel: SearchPageViewModel = SearchPageViewModel()
+    @StateObject var viewModel: SearchPageViewModel = SearchPageViewModel(vacanciesService: RootAssembly.serviceAssembly.vacanciesService)
     
     var body: some View {
         GeometryReader() { geometry in
@@ -18,14 +18,14 @@ struct SearchPageView: View {
                     Text("BRICS")
                         .font(.title.bold())
                     ZStack {
-                        if let companies = viewModel.displayingCompanies {
-                            if companies.isEmpty {
+                        if let vacancies = viewModel.displayingVacancies {
+                            if vacancies.isEmpty {
                                 Text("Come back later we can find more companies for you")
                                     .font(.caption)
                                     .foregroundColor(.gray)
                             } else {
-                                ForEach(companies.reversed()) { company in
-                                    StackCardView(company: company)
+                                ForEach(vacancies.reversed()) { vacancy in
+                                    StackCardView(vacancy: vacancy)
                                         .environmentObject(viewModel)
                                 }
                             }
@@ -65,19 +65,19 @@ struct SearchPageView: View {
                         }
                     }
                     .padding(.bottom)
-                    .disabled(viewModel.displayingCompanies?.isEmpty ?? false)
-                    .opacity((viewModel.displayingCompanies?.isEmpty ?? false) ? 0.6 : 1)
+                    .disabled(viewModel.displayingVacancies.isEmpty)
+                    .opacity((viewModel.displayingVacancies.isEmpty) ? 0.6 : 1)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
         .refreshable {
-            await RootAssembly.serviceAssembly.networkHandler.receiveReplies()
+            Task { await viewModel.loadVacancies() }
         }
     }
     
     func doSwipe(rightSwipe: Bool = false) {
-        guard let first = viewModel.displayingCompanies?.first else { return }
+        guard let first = viewModel.displayingVacancies.first else { return }
         
         NotificationCenter.default.post(name: NSNotification.Name("ACTIONFROMBUTTON"),
                                         object: nil,

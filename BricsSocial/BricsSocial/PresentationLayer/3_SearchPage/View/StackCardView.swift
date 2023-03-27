@@ -10,7 +10,7 @@ import SwiftUI
 struct StackCardView: View {
     
     @EnvironmentObject var viewModel: SearchPageViewModel
-    var company: Company
+    var vacancy: Vacancy
     
     @State var offset: CGFloat = 0
     @GestureState var isDragging: Bool = false
@@ -20,12 +20,12 @@ struct StackCardView: View {
     var body: some View {
         GeometryReader { proxy in
             let size  = proxy.size
-            let index = CGFloat(viewModel.getIndex(company: company))
+            let index = CGFloat(viewModel.getIndex(vacancy: vacancy))
             let topOffset = (index <= 2 ? index : 2) * 15
             
             ZStack {
-                CompanyCardView(company: company)
-                    .frame(width: size.width - topOffset, height: size.height)
+                VacancyCardView(vacancy: vacancy, company: viewModel.getCompany(vacancy: vacancy))
+                    .frame(width: size.width, height: size.height)
                     .cornerRadius(15)
                     .offset(y: -topOffset)
             }
@@ -73,7 +73,7 @@ struct StackCardView: View {
             
             let width = getRect().width - 50
             
-            if company.id == id {
+            if vacancy.id == id {
                 withAnimation {
                     offset = (rightSwipe ? width : -width) * 2
                     endSwipeActions()
@@ -106,9 +106,9 @@ struct StackCardView: View {
         withAnimation(.none) { endSwipe = true }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            if let _ = viewModel.displayingCompanies?.first {
+            if let _ = viewModel.displayingVacancies.first {
                 let _ = withAnimation {
-                    viewModel.displayingCompanies?.removeFirst()
+                    viewModel.displayingVacancies.removeFirst()
                 }
             }
         }

@@ -59,7 +59,7 @@ class BaseRequest {
     }
     
     var url: String {
-        return [baseUrl, root, query,formattedQueryParameters].joined()
+        return [baseUrl, root, query, formattedQueryParameters].joined()
     }
     
     // MARK: - Private
