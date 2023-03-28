@@ -1,0 +1,23 @@
+{
+  "images" : [
+    {
+      "filename" : "Above+Avalon+Neil+Cybart.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "Above+Avalon+Neil+Cybart 1.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "Above+Avalon+Neil+Cybart 2.png",
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

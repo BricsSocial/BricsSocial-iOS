@@ -14,11 +14,12 @@ protocol IServiceAssembly {
     var networkHandler: INetworkHandler { get }
     // Сущность для управления токеном доступа
     var tokenHandler: ITokenHandler { get }
-    
     // Сервис для работы с данными о специалисте
     var specialistInfoService: ISpecialistInfoService { get }
     // Сервис для работы с авторизацией пользователя в системе
     var authService: IAuthService { get }
+    // Сервис для работы с заявками
+    var vacanciesService: IVacanciesService { get }
 }
 
 final class ServiceAssembly: IServiceAssembly {
@@ -30,4 +31,5 @@ final class ServiceAssembly: IServiceAssembly {
     
     lazy var specialistInfoService: ISpecialistInfoService = SpecialistInfoService(networkHandler: networkHandler)
     lazy var authService: IAuthService = AuthService(tokenHandler: tokenHandler, networkHandler: networkHandler)
+    lazy var vacanciesService: IVacanciesService = VacanciesService(networkHandler: networkHandler)
 }

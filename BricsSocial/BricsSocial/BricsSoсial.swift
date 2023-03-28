@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct BricsScoial: App {
    
-    @State var isLogged: Bool = false
+    @State var isLogged: Bool = true
     
     var body: some Scene {
         WindowGroup {

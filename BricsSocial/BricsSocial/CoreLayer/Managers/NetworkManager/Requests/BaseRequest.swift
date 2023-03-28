@@ -59,7 +59,7 @@ class BaseRequest {
     }
     
     var url: String {
-        return [baseUrl, root, query,formattedQueryParameters].joined()
+        return [baseUrl, root, query, formattedQueryParameters].joined()
     }
     
     // MARK: - Private
@@ -83,7 +83,6 @@ extension BaseRequest {
            let httpBody = try? JSONSerialization.data(withJSONObject: self.bodyParameters, options: .prettyPrinted) {
             request.httpBody = httpBody
         }
-        
         return request
     }
 }

@@ -13,7 +13,6 @@ enum ReplyStatus: Int, Codable {
     case rejected
 }
 
-// Откликнуться на отклик на себя
 final class ReplyStatusChageRequest: BaseRequest {
     
     // Private

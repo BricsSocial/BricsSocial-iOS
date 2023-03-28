@@ -30,7 +30,7 @@ struct TabBarView: View {
                     Label(String.mainPageName, systemImage: String.mainPageIconName)
                 }
                 .tag(0)
-            SearchPageView()
+            AsyncSearchPageView()
                 .tabItem {
                     Label(String.searchPageName, systemImage: String.searchPageIconName)
                 }

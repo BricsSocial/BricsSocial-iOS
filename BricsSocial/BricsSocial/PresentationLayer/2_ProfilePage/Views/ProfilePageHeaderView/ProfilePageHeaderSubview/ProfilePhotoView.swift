@@ -15,7 +15,7 @@ struct ProfilePhotoView: View {
     @State var selectedItems: [PhotosPickerItem] = []
     
     var body: some View {
-        Image(uiImage: (viewModel.profileImage ?? UIImage()))
+        Image("DefaultAvatar")
             .resizable()
             .scaledToFill()
             .frame(width: 100, height: 100)
