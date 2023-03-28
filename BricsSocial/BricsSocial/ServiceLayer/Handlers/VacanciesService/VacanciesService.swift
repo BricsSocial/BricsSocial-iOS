@@ -8,13 +8,10 @@
 import Foundation
 
 protocol IVacanciesService {
-    
     // Загрузка информации о вакансиях
     func loadFullVacanciesInfo() async
     // Согласиться на вакансию
     func approveVacancy(vacancyId: Int) async -> NetworkError?
-    // Информация о компаниях по id
-    var companiesById: [Int: Company] { get }
     // Информация о вакансиях
     var vacancies: [Vacancy] { get }
 }
@@ -23,19 +20,22 @@ final class VacanciesService: IVacanciesService {
     
     // Dependencies
     private let networkHandler: INetworkHandler
+    private let companiesService: ICompaniesService
     
     // Models
-    private var pageNumber: Int?
+    private var pageNumber: Int = 1
+    private var hasNextPage: Bool = true
     
     // MARK: - IVacanciesService
 
-    var companiesById: [Int: Company] = [:]
     var vacancies: [Vacancy] = []
     
     // MARK: - Initialization
     
-    init(networkHandler: INetworkHandler) {
+    init(networkHandler: INetworkHandler,
+         companiesService: ICompaniesService) {
         self.networkHandler = networkHandler
+        self.companiesService = companiesService
     }
     
     func approveVacancy(vacancyId: Int) async -> NetworkError? {
@@ -46,40 +46,20 @@ final class VacanciesService: IVacanciesService {
     
     func loadFullVacanciesInfo() async {
         vacancies = await loadVacancies()
-    
-        let companies = await withTaskGroup(of: Optional<Company>.self, returning: [Company].self) { group in
-            for companyId in Set(vacancies.map { $0.companyId }).subtracting(companiesById.keys) {
-                group.addTask {
-                    return await self.loadCompanyInfo(companyId: companyId)
-                }
-            }
-            
-            return await group.compactMap { $0 }.reduce(into: [Company]()) { $0.append($1) }
-        }
-        
-        companies.forEach { company in
-            companiesById[company.id] = company
-        }
+        await companiesService.loadCompanies(ids: vacancies.map { $0.companyId })
     }
     
-    private func loadCompanyInfo(companyId: Int) async -> Company? {
-        let request = CompanyInfoRequest(companyId: companyId)
-        
-        if case .success(let model) = await networkHandler.send(request: request, type: Company.self) {
-            return model
-        } else {
-            return nil
-        }
-    }
+    // MARK: - Private
     
-    private func loadVacancies(status: VacancyStatus = .closed, pageSize: Int = 10) async -> [Vacancy] {
-        let pageNumber: Int = self.pageNumber ?? 1
+    private func loadVacancies(status: VacancyStatus = .open, pageSize: Int = 10) async -> [Vacancy] {
+        guard hasNextPage else { return [] }
+        
+        let pageNumber: Int = self.pageNumber
         let request = VacanciesRequest(status: status, pageNumber: pageNumber, pageSize: pageSize)
         
         if case .success(let metaModel) = await networkHandler.send(request: request, type: VacanciesMetaInfo.self) {
-            if metaModel.hasNextPage {
-                self.pageNumber = pageNumber + 1
-            }
+            self.hasNextPage = metaModel.hasNextPage
+            self.pageNumber = metaModel.pageNumber
             
             return metaModel.items
         } else {

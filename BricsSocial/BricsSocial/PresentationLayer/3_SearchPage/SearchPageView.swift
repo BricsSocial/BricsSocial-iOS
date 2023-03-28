@@ -9,7 +9,8 @@ import SwiftUI
 
 struct AsyncSearchPageView: View {
     
-    @StateObject var viewModel: SearchPageViewModel = SearchPageViewModel(vacanciesService: RootAssembly.serviceAssembly.vacanciesService)
+    @StateObject var viewModel: SearchPageViewModel = SearchPageViewModel(vacanciesService: RootAssembly.serviceAssembly.vacanciesService,
+                                                                          companiesService: RootAssembly.serviceAssembly.companiesService)
     
     var body: some View {
         AsyncContentView(source: viewModel, content: {
@@ -30,7 +31,7 @@ struct SearchPageView: View {
                     ZStack {
                         if let vacancies = viewModel.displayingVacancies {
                             if vacancies.isEmpty {
-                                Text("Come back later we can find more companies for you")
+                                Text("Come back later we can find more vacancies for you")
                                     .font(.caption)
                                     .foregroundColor(.gray)
                             } else {

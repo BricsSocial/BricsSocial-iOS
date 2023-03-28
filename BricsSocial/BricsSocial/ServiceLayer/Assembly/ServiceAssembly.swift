@@ -20,6 +20,10 @@ protocol IServiceAssembly {
     var authService: IAuthService { get }
     // Сервис для работы с заявками
     var vacanciesService: IVacanciesService { get }
+    // Сервис для работы с компаниями
+    var companiesService: ICompaniesService { get }
+    // Сервис для работы с заявками
+    var repliesService: IRepliesService { get }
 }
 
 final class ServiceAssembly: IServiceAssembly {
@@ -31,5 +35,7 @@ final class ServiceAssembly: IServiceAssembly {
     
     lazy var specialistInfoService: ISpecialistInfoService = SpecialistInfoService(networkHandler: networkHandler)
     lazy var authService: IAuthService = AuthService(tokenHandler: tokenHandler, networkHandler: networkHandler)
-    lazy var vacanciesService: IVacanciesService = VacanciesService(networkHandler: networkHandler)
+    lazy var vacanciesService: IVacanciesService = VacanciesService(networkHandler: networkHandler, companiesService: companiesService)
+    lazy var companiesService: ICompaniesService = CompaniesService(networkHandler: networkHandler)
+    lazy var repliesService: IRepliesService = RepliesService(networkHandler: networkHandler, companiesService: companiesService)
 }

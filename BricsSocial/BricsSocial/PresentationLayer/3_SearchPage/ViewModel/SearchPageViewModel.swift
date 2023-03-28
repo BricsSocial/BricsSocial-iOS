@@ -11,6 +11,7 @@ final class SearchPageViewModel: ObservableObject {
     
     // Dependencies
     private let vacanciesService: IVacanciesService
+    private let companiesService: ICompaniesService
     
     // Observed values
     @Published var state: LoadingState = .loading
@@ -18,8 +19,10 @@ final class SearchPageViewModel: ObservableObject {
     
     // MARK: - Initialization
     
-    init(vacanciesService: IVacanciesService) {
+    init(vacanciesService: IVacanciesService,
+         companiesService: ICompaniesService) {
         self.vacanciesService = vacanciesService
+        self.companiesService = companiesService
     }
     
     func loadVacancies() async {
@@ -44,7 +47,7 @@ final class SearchPageViewModel: ObservableObject {
     }
     
     func getCompany(vacancy: Vacancy) -> Company? {
-        return vacanciesService.companiesById[vacancy.companyId]
+        return companiesService.companiesById[vacancy.companyId]
     }
 }
 
