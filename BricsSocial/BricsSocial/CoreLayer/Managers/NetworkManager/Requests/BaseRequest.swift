@@ -83,7 +83,6 @@ extension BaseRequest {
            let httpBody = try? JSONSerialization.data(withJSONObject: self.bodyParameters, options: .prettyPrinted) {
             request.httpBody = httpBody
         }
-        
         return request
     }
 }

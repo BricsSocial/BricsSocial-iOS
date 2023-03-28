@@ -55,9 +55,7 @@ struct StackCardView: View {
                             endSwipeActions()
                             
                             if translation > 0 {
-                                rightSwipe()
-                            } else {
-                                leftSwipe()
+                                rightSwipe(id: vacancy.id)
                             }
                         } else {
                             offset = .zero
@@ -79,21 +77,17 @@ struct StackCardView: View {
                     endSwipeActions()
                     
                     if rightSwipe {
-                        self.rightSwipe()
-                    } else {
-                        leftSwipe()
+                        self.rightSwipe(id: id)
                     }
                 }
             }
         }
     }
     
-    func leftSwipe() {
-        print("Left Swipe")
-    }
-    
-    func rightSwipe() {
-        print("Right Swipe")
+    func rightSwipe(id: Int) {
+        Task {
+            await viewModel.approveVacancy(vacancyId: id)
+        }
     }
     
     

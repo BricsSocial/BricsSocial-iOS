@@ -13,6 +13,7 @@ final class SearchPageViewModel: ObservableObject {
     private let vacanciesService: IVacanciesService
     
     // Observed values
+    @Published var state: LoadingState = .loading
     @Published var displayingVacancies: [Vacancy] = []
     
     // MARK: - Initialization
@@ -31,6 +32,10 @@ final class SearchPageViewModel: ObservableObject {
         }
     }
     
+    func approveVacancy(vacancyId: Int) async -> NetworkError? {
+        return await vacanciesService.approveVacancy(vacancyId: vacancyId)
+    }
+    
     func getIndex(vacancy: Vacancy) -> Int {
         let index = displayingVacancies.firstIndex(where: { currentVacancy in
             return vacancy.id == currentVacancy.id
@@ -40,5 +45,20 @@ final class SearchPageViewModel: ObservableObject {
     
     func getCompany(vacancy: Vacancy) -> Company? {
         return vacanciesService.companiesById[vacancy.companyId]
+    }
+}
+
+// MARK: - LoadableObject
+
+extension SearchPageViewModel: LoadableObject {
+    
+    func load() async {
+        await vacanciesService.loadFullVacanciesInfo()
+        
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.state = .loaded
+            self.displayingVacancies = self.vacanciesService.vacancies
+        }
     }
 }

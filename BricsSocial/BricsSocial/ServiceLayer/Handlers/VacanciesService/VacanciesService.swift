@@ -11,6 +11,8 @@ protocol IVacanciesService {
     
     // Загрузка информации о вакансиях
     func loadFullVacanciesInfo() async
+    // Согласиться на вакансию
+    func approveVacancy(vacancyId: Int) async -> NetworkError?
     // Информация о компаниях по id
     var companiesById: [Int: Company] { get }
     // Информация о вакансиях
@@ -34,6 +36,12 @@ final class VacanciesService: IVacanciesService {
     
     init(networkHandler: INetworkHandler) {
         self.networkHandler = networkHandler
+    }
+    
+    func approveVacancy(vacancyId: Int) async -> NetworkError? {
+        let request = ApproveVacancyRequest(vacancyId: vacancyId)
+        
+        return await networkHandler.send(request: request)
     }
     
     func loadFullVacanciesInfo() async {

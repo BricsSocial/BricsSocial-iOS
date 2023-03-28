@@ -7,9 +7,19 @@
 
 import SwiftUI
 
-struct SearchPageView: View {
+struct AsyncSearchPageView: View {
     
     @StateObject var viewModel: SearchPageViewModel = SearchPageViewModel(vacanciesService: RootAssembly.serviceAssembly.vacanciesService)
+    
+    var body: some View {
+        AsyncContentView(source: viewModel, content: {
+            SearchPageView(viewModel: viewModel)
+        })
+    }
+}
+
+struct SearchPageView: View {
+    @ObservedObject var viewModel: SearchPageViewModel
     
     var body: some View {
         GeometryReader() { geometry in
@@ -85,11 +95,5 @@ struct SearchPageView: View {
                                             "id": first.id,
                                             "rightSwipe": rightSwipe
                                         ])
-    }
-}
-
-struct SearchPageView_Previews: PreviewProvider {
-    static var previews: some View {
-        SearchPageView()
     }
 }
