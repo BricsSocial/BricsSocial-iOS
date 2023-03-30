@@ -20,9 +20,6 @@ private extension String {
     static let emailFieldName: String = "Email"
     static let emailIconName: String = "envelope.fill"
     
-    static let phoneFieldName: String = "Phone"
-    static let phoneIconName: String = "phone.fill"
-    
     static let plusButtonIcon: String = "plus"
     
     static let skillsFieldName: String = "Skills"
@@ -36,7 +33,6 @@ private extension String {
 
 enum InputTextViewType {
     case email
-    case phone
     case name
     case surname
     case bio
@@ -101,12 +97,6 @@ final class InputTextFieldViewModelFactory: IInputTextFieldViewModelFactory {
                                            iconName: String.emailIconName,
                                            textContentType: .emailAddress,
                                            validation: dataValidationHandler.validateEmail(rawEmail:))
-        case .phone:
-            return InputTextFieldViewModel(textFieldName: String.phoneFieldName,
-                                           textFieldContent: "8 995 792 24 25",
-                                           iconName: String.phoneIconName,
-                                           textContentType: .telephoneNumber,
-                                           validation: dataValidationHandler.validatePhone(rawPhone:))
         case .skills:
             return InputTextFieldViewModel(textFieldName: String.skillsFieldName,
                                            textFieldContent: String.skillsFieldContent,

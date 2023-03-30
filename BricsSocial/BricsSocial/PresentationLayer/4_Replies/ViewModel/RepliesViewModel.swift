@@ -16,9 +16,7 @@ final class RepliesViewModel: ObservableObject {
     // Observed values
     @Published var state: LoadingState = .loading
 
-    @Published var approvedReplies: [Reply] = []
-    @Published var rejectedReplies: [Reply] = []
-    @Published var pendingReplies: [Reply] = []
+    @Published var repliesViewModels: [ReplyCardViewModel] = []
     
     // MARK: - Initialization
     
@@ -30,27 +28,17 @@ final class RepliesViewModel: ObservableObject {
     
     // MARK: - Public
     
-    func reloadReplies(of status: ReplyStatus) async {
-        await repliesService.reloadReplies(of: status)
-        
-        DispatchQueue.main.async { [self] in
-            switch status {
-            case .approved: approvedReplies = repliesService.replies(of: .approved)
-            case .pending: pendingReplies = repliesService.replies(of: .pending)
-            case .rejected: rejectedReplies = repliesService.replies(of: .rejected)
-            }
-        }
-    }
-    
     func reloadAllReplies() async -> NetworkError? {
         if let error = await repliesService.reloadAllReplies() {
             return error
         }
         
         DispatchQueue.main.async { [self] in
-            approvedReplies = repliesService.replies(of: .approved)
-            pendingReplies = repliesService.replies(of: .pending)
-            rejectedReplies = repliesService.replies(of: .rejected)
+            repliesViewModels = repliesService.replies.map { reply in
+                ReplyCardViewModel(repliesService: repliesService,
+                                   reply: reply,
+                                   company: companiesService.companiesById[reply.vacancy.companyId])
+            }
         }
         
         return nil

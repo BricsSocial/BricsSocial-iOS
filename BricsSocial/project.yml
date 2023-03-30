@@ -1,0 +1,19 @@
+include:
+  - xcodegen/targets/BricsSocial.yml
+
+name: BricsSocial
+
+configs:
+  Debug: debug
+  Release: release
+
+options:
+  bundleIdPrefix: ru.Samarenko
+  defaultConfig: Release
+  developmentLanguage: ru
+  deploymentTarget:
+    iOS: 16.0
+  groupSortPosition: top
+  generateEmptyDirectories: true
+  postGenCommand: cp 'xcodegen/schemes/BricsSocial.xcscheme' 'BricsSocial.xcodeproj/xcshareddata/xcschemes/BricsSocial.xcscheme'
+  postGenCommand: 'pod install'

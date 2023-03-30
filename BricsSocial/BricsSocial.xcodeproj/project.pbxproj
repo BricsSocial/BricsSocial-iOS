@@ -35,6 +35,8 @@
 		7B1C899529D34643007C2842 /* RoundedCorner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1C899429D34643007C2842 /* RoundedCorner.swift */; };
 		7B1D626229CF29940012AB57 /* BaseRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1D626129CF29940012AB57 /* BaseRequest.swift */; };
 		7B55F1C729D2FDB30090B247 /* ApproveVacancyRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B55F1C629D2FDB30090B247 /* ApproveVacancyRequest.swift */; };
+		7B60E42129D57A7C003EFF14 /* ReplyCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B60E42029D57A7C003EFF14 /* ReplyCardViewModel.swift */; };
+		7B60E42329D58239003EFF14 /* ChangeReplyStatusRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B60E42229D58239003EFF14 /* ChangeReplyStatusRequest.swift */; };
 		7BBBEA6029CB5D0A00DC5072 /* SearchPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BBBEA5F29CB5D0A00DC5072 /* SearchPageView.swift */; };
 		7BBBEA6429CB619600DC5072 /* SearchPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BBBEA6329CB619600DC5072 /* SearchPageViewModel.swift */; };
 		7BBBEA6629CB62E300DC5072 /* StackCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BBBEA6529CB62E300DC5072 /* StackCardView.swift */; };
@@ -106,6 +108,8 @@
 		7B1C899429D34643007C2842 /* RoundedCorner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorner.swift; sourceTree = "<group>"; };
 		7B1D626129CF29940012AB57 /* BaseRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseRequest.swift; sourceTree = "<group>"; };
 		7B55F1C629D2FDB30090B247 /* ApproveVacancyRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApproveVacancyRequest.swift; sourceTree = "<group>"; };
+		7B60E42029D57A7C003EFF14 /* ReplyCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyCardViewModel.swift; sourceTree = "<group>"; };
+		7B60E42229D58239003EFF14 /* ChangeReplyStatusRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeReplyStatusRequest.swift; sourceTree = "<group>"; };
 		7BBBEA5F29CB5D0A00DC5072 /* SearchPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPageView.swift; sourceTree = "<group>"; };
 		7BBBEA6329CB619600DC5072 /* SearchPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPageViewModel.swift; sourceTree = "<group>"; };
 		7BBBEA6529CB62E300DC5072 /* StackCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackCardView.swift; sourceTree = "<group>"; };
@@ -499,6 +503,7 @@
 			children = (
 				7BCCE18929CF38F000A8E5CE /* ReplyStatusChageRequest.swift */,
 				7BCCE1AF29D05FB100A8E5CE /* UpdateSpecialistInfoRequest.swift */,
+				7B60E42229D58239003EFF14 /* ChangeReplyStatusRequest.swift */,
 			);
 			path = PUT;
 			sourceTree = "<group>";
@@ -716,6 +721,7 @@
 			isa = PBXGroup;
 			children = (
 				7BDFC0C329D31A96003DCB8C /* RepliesViewModel.swift */,
+				7B60E42029D57A7C003EFF14 /* ReplyCardViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -790,6 +796,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7B60E42329D58239003EFF14 /* ChangeReplyStatusRequest.swift in Sources */,
 				7B040F3C29C9CF1700E3BC2E /* InputTextFieldViewModel.swift in Sources */,
 				7BCCE1B329D08E3700A8E5CE /* SignInView.swift in Sources */,
 				7BDEE3BA29CC66ED00BB5E3D /* Logger.swift in Sources */,
@@ -837,6 +844,7 @@
 				7B040F3829C9CF1700E3BC2E /* ProfilePageViewModel.swift in Sources */,
 				7B1C898F29D331C6007C2842 /* ReplyCardView.swift in Sources */,
 				7BCCE1C929D0D99200A8E5CE /* Company.swift in Sources */,
+				7B60E42129D57A7C003EFF14 /* ReplyCardViewModel.swift in Sources */,
 				7B040F5429C9FAF500E3BC2E /* InputTextFieldViewModelFactory.swift in Sources */,
 				7BBBEA6629CB62E300DC5072 /* StackCardView.swift in Sources */,
 				7BCCE18A29CF38F000A8E5CE /* ReplyStatusChageRequest.swift in Sources */,

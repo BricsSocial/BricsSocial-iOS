@@ -8,12 +8,11 @@
 import Foundation
 
 protocol IRepliesService {
-    // Получить все реплаи для статуса
-    func replies(of status: ReplyStatus) -> [Reply]
-    // Перезагрузить реплаи конкретного статуса
-    func reloadReplies(of status: ReplyStatus) async -> NetworkError?
+    var replies: [Reply] { get }
     // Перезагрузить все реплаи
     func reloadAllReplies() async -> NetworkError?
+    // Изменить статус reply
+    func changeReplyStatus(replyId: Int, newStatus: ReplyStatus) async -> Reply?
 }
 
 final class RepliesService: IRepliesService {
@@ -23,7 +22,7 @@ final class RepliesService: IRepliesService {
     private let companiesService: ICompaniesService
     
     // Private
-    private var replies: [Reply] = []
+    var replies: [Reply] = []
     
     // MARK: - Initialization
     
@@ -35,24 +34,6 @@ final class RepliesService: IRepliesService {
     }
     
     // MARK: - IRepliesService
-        
-    func replies(of status: ReplyStatus) -> [Reply] {
-        return replies.filter { $0.status == status }
-    }
-
-    func reloadReplies(of status: ReplyStatus) async -> NetworkError? {
-        replies.removeAll(where: { $0.status == status })
-        
-        let request = AllRepliesRequest(status: status, pageNumber: 1)
-        switch await networkHandler.send(request: request, type: ReplyMetaInfo.self) {
-        case .success(let metaInfo):
-            replies.append(contentsOf: metaInfo.items)
-            await companiesService.loadCompanies(ids: metaInfo.items.map { $0.vacancy.companyId })
-            return nil
-        case .failure(let error):
-            return error
-        }
-    }
     
     func reloadAllReplies() async -> NetworkError? {
         let request = AllRepliesRequest()
@@ -63,6 +44,16 @@ final class RepliesService: IRepliesService {
             return nil
         case .failure(let error):
             return error
+        }
+    }
+    
+    func changeReplyStatus(replyId: Int, newStatus: ReplyStatus) async -> Reply? {
+        let request = ChangeReplyStatusRequest(replyId: replyId, status: newStatus)
+        
+        if case .success(let model) = await networkHandler.send(request: request, type: Reply.self) {
+            return model
+        } else {
+            return nil
         }
     }
 }

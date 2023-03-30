@@ -31,8 +31,8 @@ struct RepliesView: View {
                 LazyVStack {
                     Text("Replies")
                         .font(.largeTitle.bold())
-                    ForEach(viewModel.pendingReplies) { reply in
-                        ReplyCardView(reply: reply, company: viewModel.companyForId(reply.vacancy.companyId))
+                    ForEach(viewModel.repliesViewModels) { viewModel in
+                        ReplyCardView(viewModel: viewModel)
                     }
                 }
             }.refreshable {

@@ -30,7 +30,7 @@ class BaseRequest {
     
     // Основной url для построения запросов
     var baseUrl: String {
-        return "http://51.250.86.18"
+        return "http://158.160.37.250"
     }
     
     // Тип запроса

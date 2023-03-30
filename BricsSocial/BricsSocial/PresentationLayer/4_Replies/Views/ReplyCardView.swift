@@ -9,17 +9,26 @@ import SwiftUI
 
 struct ReplyCardView: View {
     
-    var reply: Reply
-    var company: Company?
+    @ObservedObject var viewModel: ReplyCardViewModel
     
     var body: some View {
         card
+            .disabled(viewModel.reply.vacancy.status == .closed)
+            .opacity((viewModel.reply.vacancy.status == .closed) ? 0.4 : 1)
+    }
+    
+    private var isApproved: Bool {
+        viewModel.reply.status == .approved
+    }
+    
+    private var isDeclined: Bool {
+        viewModel.reply.status == .rejected
     }
     
     private var card: some View {
         VStack(alignment: .leading) {
             HStack {
-                if let logo = company?.logo {
+                if let logo = viewModel.company?.logo {
                     AsyncImage(url: URL(string: logo)) {
                         phase in
                             if case .success(let image) = phase {
@@ -31,7 +40,7 @@ struct ReplyCardView: View {
                         .clipShape(Circle())
                         .overlay(Circle().stroke().fill(Color.black))
                 }
-                Text(company?.name ?? "Unknown company")
+                Text(viewModel.company?.name ?? "Unknown company")
                     .font(.callout.bold())
                     .foregroundColor(.black)
                     .padding(.vertical)
@@ -41,17 +50,25 @@ struct ReplyCardView: View {
             .padding(.leading)
             .padding(.bottom, -10)
             Divider()
-            Text(reply.vacancy.name ?? "Unknown")
-                .font(.title2.bold())
-                .padding(.bottom, 3)
+            Text(viewModel.reply.vacancy.name ?? "Unknown")
+                .font(.title3.bold())
             .padding(.horizontal)
-            Text("Offerings: " + (reply.vacancy.offerings ?? ""))
-                .lineLimit(2)
-                .foregroundColor(.gray)
+            .padding(.bottom, 2)
+            
+            Text("Offerings: \(viewModel.reply.vacancy.offerings ??  "No offerings provided")")
                 .font(.caption)
+                .lineLimit(2)
+                .foregroundColor(Color.gray)
                 .padding(.horizontal)
-                .padding(.bottom, 20)
-            approve
+                .padding(.bottom, 15)
+            
+            if viewModel.reply.type == .specialist {
+                approve
+            }
+            
+            if viewModel.reply.status == .approved {
+                agentInfo
+            }
         }
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .background(
@@ -59,17 +76,61 @@ struct ReplyCardView: View {
                 .fill(Color.white)
                 .shadow(radius: 4)
         )
-        .padding()
+        .animation(.easeInOut)
+        .padding(.horizontal)
+        .padding(.bottom, 10)
+    }
+    
+    private var agentInfo: some View {
+        VStack(alignment: .leading) {
+            Divider()
+            HStack(alignment: .top, spacing: 5) {
+                if let logo = viewModel.reply.agent?.photo {
+                    AsyncImage(url: URL(string: logo)) {
+                        phase in
+                        if case .success(let image) = phase {
+                            image.resizable()
+                                .aspectRatio(contentMode: .fill)
+                        }
+                    }
+                    .frame(width: 30, height: 30)
+                    .clipShape(Circle())
+                    .overlay(Circle().stroke().fill(Color.black))
+                }
+                VStack(alignment: .leading) {
+                    Text(viewModel.reply.agent?.position ?? "Agent")
+                        .foregroundColor(.black)
+                        .font(.caption.bold())
+                    Text("\(viewModel.reply.agent?.firstName ?? "Name") \(viewModel.reply.agent?.lastName ?? "Last Name")")
+                        .foregroundColor(.black)
+                        .font(.caption)
+                }
+                .frame(maxWidth: .infinity)
+                
+                VStack(alignment: .leading) {
+                    Text("Email")
+                        .foregroundColor(.black)
+                        .font(.caption.bold())
+                    Text("\(viewModel.reply.agent?.email ?? "company@gmail.com")")
+                        .lineLimit(1)
+                        .foregroundColor(.black)
+                        .font(.caption)
+                }.frame(maxWidth: .infinity)
+            }
+            .padding(.horizontal)
+            .padding(.bottom)
+        }
+        .background(Color("LightGrayColor"))
     }
     
     private var status: some View {
         HStack {
             Circle()
-                .fill(reply.status.color)
+                .fill(viewModel.reply.status.color)
                 .frame(width: 10, height: 10)
-            Text(reply.status.raw.capitalized)
+            Text(viewModel.reply.status.raw.capitalized)
                 .font(.callout.bold())
-                .foregroundColor(reply.status.color)
+                .foregroundColor(viewModel.reply.status.color)
         }
         .padding()
     }
@@ -77,43 +138,38 @@ struct ReplyCardView: View {
     private var approve: some View {
         HStack {
             Button {
-                
+                Task {
+                    await viewModel.acceptReply()
+                }
             } label: {
-                Text("Approve")
+                Text(isApproved ? "Approved" : "Approve")
                     .foregroundColor(.white)
+                    .font(.caption2)
                     .bold()
                     .padding(10)
                     .frame(maxWidth: .infinity)
                     .background(RoundedRectangle(cornerRadius: 15))
             }
+            .disabled(isApproved)
             
             Button {
-                
+                Task {
+                    await viewModel.rejectReply()
+                }
             } label: {
-                Text("Decline")
+                Text(isDeclined ? "Declined" : "Decline")
                     .foregroundColor(.white)
+                    .font(.caption2)
                     .bold()
                     .padding(10)
                     .frame(maxWidth: .infinity)
                     .background(RoundedRectangle(cornerRadius: 15))
             }
+            .disabled(isDeclined)
+            
         }
         .padding(.top, -10)
         .padding(.horizontal)
-        .padding(.bottom)
-    }
-}
-
-struct ReplyCardView_Previews: PreviewProvider {
-    static var previews: some View {
-        ReplyCardView(reply: .init(vacancy: .init(id: 1,
-                                                  name: "Developer",
-                                                  requirements: "", offerings: "Offering new office, cool team and hype",
-                                                  status: .open, skillTags: "",
-                                                  companyId: 2),
-                                   status: .pending,
-                                   type: .specialist),
-    company: Company(id: 1, name: "Sber",
-                     description: "Sber", logo: "https://s3.yandexcloud.net/brics-server-dev/companies/0e6ab87a-d8a4-4451-ba80-32ba4857ddbd.jpg"))
+        .padding(.bottom, 15)
     }
 }

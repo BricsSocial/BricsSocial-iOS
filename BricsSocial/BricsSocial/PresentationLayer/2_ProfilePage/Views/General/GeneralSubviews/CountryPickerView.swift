@@ -30,7 +30,7 @@ struct CountryPickerView: View {
                     chosenCountry = client
                 }) {
                     HStack {
-                        Text(client.name + " " + "(+\(client.phoneCode))")
+                        Text(client.name)
                             .foregroundColor(.black)
                         Spacer()
                         Image(client.code)
@@ -63,7 +63,7 @@ struct CountryPickerView: View {
                     .frame(width: 20, height: 20)
                     .padding(.trailing, 15)
                    
-                Text(chosenCountry.name + " " + "(+\(chosenCountry.phoneCode))")
+                Text(chosenCountry.name)
                     .font(Font.body.weight(.medium))
                     .foregroundColor(Color.lightGrayColor)
                 
@@ -71,6 +71,7 @@ struct CountryPickerView: View {
                 Image(systemName: "chevron.down")
                     .frame(width: 20, height: 20)
                     .foregroundColor(Color.lightGrayColor)
+                    .opacity(isEditable ? 1 : 0)
             }
             .padding(.all, 15)
             .background(

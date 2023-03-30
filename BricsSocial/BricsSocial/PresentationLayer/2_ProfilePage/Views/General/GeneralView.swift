@@ -23,11 +23,9 @@ struct GeneralView: View {
             InputTextFieldView(viewModel: viewModel.textFieldViewModel(.email),
                                textFieldText: $viewModel.mailFieldText,
                                isEditable: $viewModel.isEditing)
-            InputTextFieldView(viewModel: viewModel.textFieldViewModel(.phone),
-                               textFieldText: $viewModel.phoneFieldText,
-                               isEditable: $viewModel.isEditing)
             CountryPickerView(chosenCountry: $viewModel.country,
-                              isEditable: $viewModel.isEditing)
+                              isEditable: Binding.constant(false))
+            .disabled(true)
         }
     }
 }

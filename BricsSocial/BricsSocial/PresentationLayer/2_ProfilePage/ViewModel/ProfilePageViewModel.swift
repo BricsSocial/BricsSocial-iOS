@@ -38,7 +38,6 @@ final class ProfilePageViewModel: ObservableObject {
     @Published var nameFieldText   : String  = String()
     @Published var surnameFieldText: String  = String()
     @Published var mailFieldText   : String  = String()
-    @Published var phoneFieldText  : String  = String()
     @Published var country         : Country = .brasil
     
     // Computed Properties
@@ -52,7 +51,6 @@ final class ProfilePageViewModel: ObservableObject {
         if !nameFieldText.isEmpty { validationArray.append(dataValidationHandler.validateNameOrSurname(rawValue: nameFieldText)) }
         if !surnameFieldText.isEmpty { validationArray.append(dataValidationHandler.validateNameOrSurname(rawValue: surnameFieldText)) }
         if !mailFieldText.isEmpty { validationArray.append(dataValidationHandler.validateEmail(rawEmail: mailFieldText)) }
-        if !phoneFieldText.isEmpty { validationArray.append(dataValidationHandler.validatePhone(rawPhone: phoneFieldText)) }
         if !bioFieldText.isEmpty { validationArray.append(dataValidationHandler.validateBio(rawBio: bioFieldText)) }
         
         return validationArray.allSatisfy { $0 }
@@ -78,7 +76,6 @@ final class ProfilePageViewModel: ObservableObject {
         nameFieldText    = String()
         surnameFieldText = String()
         mailFieldText    = String()
-        phoneFieldText   = String()
         country          = cachedSpecialistInfo?.countryId ?? .brasil
     }
     
