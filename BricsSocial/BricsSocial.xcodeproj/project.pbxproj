@@ -37,6 +37,8 @@
 		7B55F1C729D2FDB30090B247 /* ApproveVacancyRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B55F1C629D2FDB30090B247 /* ApproveVacancyRequest.swift */; };
 		7B60E42129D57A7C003EFF14 /* ReplyCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B60E42029D57A7C003EFF14 /* ReplyCardViewModel.swift */; };
 		7B60E42329D58239003EFF14 /* ChangeReplyStatusRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B60E42229D58239003EFF14 /* ChangeReplyStatusRequest.swift */; };
+		7B60E42729D5CC85003EFF14 /* PhotoChangeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B60E42629D5CC85003EFF14 /* PhotoChangeRequest.swift */; };
+		7B60E42929D5D4E1003EFF14 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B60E42829D5D4E1003EFF14 /* Photo.swift */; };
 		7BBBEA6029CB5D0A00DC5072 /* SearchPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BBBEA5F29CB5D0A00DC5072 /* SearchPageView.swift */; };
 		7BBBEA6429CB619600DC5072 /* SearchPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BBBEA6329CB619600DC5072 /* SearchPageViewModel.swift */; };
 		7BBBEA6629CB62E300DC5072 /* StackCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BBBEA6529CB62E300DC5072 /* StackCardView.swift */; };
@@ -110,6 +112,8 @@
 		7B55F1C629D2FDB30090B247 /* ApproveVacancyRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApproveVacancyRequest.swift; sourceTree = "<group>"; };
 		7B60E42029D57A7C003EFF14 /* ReplyCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyCardViewModel.swift; sourceTree = "<group>"; };
 		7B60E42229D58239003EFF14 /* ChangeReplyStatusRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeReplyStatusRequest.swift; sourceTree = "<group>"; };
+		7B60E42629D5CC85003EFF14 /* PhotoChangeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoChangeRequest.swift; sourceTree = "<group>"; };
+		7B60E42829D5D4E1003EFF14 /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		7BBBEA5F29CB5D0A00DC5072 /* SearchPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPageView.swift; sourceTree = "<group>"; };
 		7BBBEA6329CB619600DC5072 /* SearchPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPageViewModel.swift; sourceTree = "<group>"; };
 		7BBBEA6529CB62E300DC5072 /* StackCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackCardView.swift; sourceTree = "<group>"; };
@@ -483,6 +487,7 @@
 				7BCCE1A329D0428300A8E5CE /* Reply.swift */,
 				7BCCE1C629D0CA0100A8E5CE /* Token.swift */,
 				7BCCE1C829D0D99200A8E5CE /* Company.swift */,
+				7B60E42829D5D4E1003EFF14 /* Photo.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -504,6 +509,7 @@
 				7BCCE18929CF38F000A8E5CE /* ReplyStatusChageRequest.swift */,
 				7BCCE1AF29D05FB100A8E5CE /* UpdateSpecialistInfoRequest.swift */,
 				7B60E42229D58239003EFF14 /* ChangeReplyStatusRequest.swift */,
+				7B60E42629D5CC85003EFF14 /* PhotoChangeRequest.swift */,
 			);
 			path = PUT;
 			sourceTree = "<group>";
@@ -812,6 +818,7 @@
 				7BDFC0BE29D30DF1003DCB8C /* RepliesService.swift in Sources */,
 				7B040F2F29C9CF1700E3BC2E /* Tag.swift in Sources */,
 				7B040F3029C9CF1700E3BC2E /* TagView.swift in Sources */,
+				7B60E42729D5CC85003EFF14 /* PhotoChangeRequest.swift in Sources */,
 				7BDFC0C429D31A96003DCB8C /* RepliesViewModel.swift in Sources */,
 				7B040F3729C9CF1700E3BC2E /* ProfilePhotoView.swift in Sources */,
 				7B1C899529D34643007C2842 /* RoundedCorner.swift in Sources */,
@@ -834,6 +841,7 @@
 				7B1C899229D33A8C007C2842 /* CompaniesService.swift in Sources */,
 				7BDEE3BF29CC70EC00BB5E3D /* ProfileImageHandler.swift in Sources */,
 				7B040F3529C9CF1700E3BC2E /* CountryPickerView.swift in Sources */,
+				7B60E42929D5D4E1003EFF14 /* Photo.swift in Sources */,
 				7BCCE18829CF37A300A8E5CE /* AllRepliesRequest.swift in Sources */,
 				7BCCE19429D0291100A8E5CE /* NetworkHandler.swift in Sources */,
 				7BCCE1A629D05A5900A8E5CE /* CurrentSpecialistInfoRequest.swift in Sources */,

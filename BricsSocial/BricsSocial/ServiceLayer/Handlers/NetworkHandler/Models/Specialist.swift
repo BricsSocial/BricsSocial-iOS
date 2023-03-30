@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Specialist: Codable {
+struct Specialist: Codable, Equatable {
     var id: Int
     var email: String?
     var firstName: String?

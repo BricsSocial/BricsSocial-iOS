@@ -16,6 +16,7 @@ protocol IProfileImageHandler {
     var image: UIImage? { get }
     func provideProfileImage()
     func setProfileImage(image: UIImage)
+    func uploadProfilePicture(specialistId: Int, image: UIImage) async -> String?
 }
 
 final class ProfileImageHandler: IProfileImageHandler {
@@ -25,11 +26,27 @@ final class ProfileImageHandler: IProfileImageHandler {
     
     // Dependencies
     private var localFileManager: ILocalFileManager
+    private var networkHandler: INetworkHandler
     
     // MARK: - Initialization
     
-    init(localFileManager: ILocalFileManager) {
+    init(localFileManager: ILocalFileManager,
+         networkHandler: INetworkHandler) {
         self.localFileManager = localFileManager
+        self.networkHandler = networkHandler
+    }
+    
+    func uploadProfilePicture(specialistId: Int, image: UIImage) async -> String? {
+        let boundary = UUID().uuidString
+        let request = PhotoChangeRequest(specialistId: specialistId, image: image, boundary: boundary)
+        request.headers["content-type"] = "multipart/form-data; boundary=\(boundary)"
+        
+        switch await networkHandler.send(request: request, type: Photo.self) {
+        case .success(let model):
+            return model.fileUrl
+        case .failure:
+            return nil
+        }
     }
 
     func provideProfileImage() {

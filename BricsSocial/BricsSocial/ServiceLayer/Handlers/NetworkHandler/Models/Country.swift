@@ -23,7 +23,7 @@ private extension String {
     static let localeIdentifier: String = "en-US"
 }
 
-enum Country: Int, Codable, CaseIterable {
+enum Country: Int, Codable, CaseIterable, Equatable {
     case brasil = 1
     case russia
     case india

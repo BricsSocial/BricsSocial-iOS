@@ -29,7 +29,7 @@ protocol IServiceAssembly {
 final class ServiceAssembly: IServiceAssembly {
     
     lazy var dataValidationHandler: IDataValidationHandler = DataValidationHandler()
-    lazy var profileImageHandler: IProfileImageHandler = ProfileImageHandler(localFileManager: RootAssembly.coreAssembly.localFileManager)
+    lazy var profileImageHandler: IProfileImageHandler = ProfileImageHandler(localFileManager: RootAssembly.coreAssembly.localFileManager, networkHandler: networkHandler)
     lazy var tokenHandler: ITokenHandler = TokenHandler(keyChainManager: RootAssembly.coreAssembly.keyChainManager)
     lazy var networkHandler: INetworkHandler = NetworkHandler(tokenHandler: tokenHandler, networkManager: RootAssembly.coreAssembly.networkRequestsManager)
     
