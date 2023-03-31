@@ -1,6 +1,0 @@
-framework module Pods_BricsSocial {
-  umbrella header "Pods-BricsSocial-umbrella.h"
-
-  export *
-  module * { export * }
-}
