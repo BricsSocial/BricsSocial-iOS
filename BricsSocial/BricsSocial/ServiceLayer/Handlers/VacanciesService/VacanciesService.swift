@@ -12,6 +12,8 @@ protocol IVacanciesService {
     func loadFullVacanciesInfo() async
     // Согласиться на вакансию
     func approveVacancy(vacancyId: Int) async -> NetworkError?
+    // Поиск по слову
+    func searchByKeyWord(_ keyword: String) async
     // Информация о вакансиях
     var vacancies: [Vacancy] { get }
 }
@@ -40,13 +42,21 @@ final class VacanciesService: IVacanciesService {
     
     func approveVacancy(vacancyId: Int) async -> NetworkError? {
         let request = ApproveVacancyRequest(vacancyId: vacancyId)
-        
         return await networkHandler.send(request: request)
     }
     
     func loadFullVacanciesInfo() async {
         vacancies = await loadVacancies()
         await companiesService.loadCompanies(ids: vacancies.map { $0.companyId })
+    }
+    
+    func searchByKeyWord(_ keyword: String) async {
+        let request = VacanciesRequest(status: .open, pageNumber: 1, pageSize: 10, skillTags: keyword)
+        
+        if case .success(let metaModel) = await networkHandler.send(request: request, type: VacanciesMetaInfo.self) {
+            vacancies = metaModel.items
+            await companiesService.loadCompanies(ids: vacancies.map { $0.companyId })
+        }
     }
     
     // MARK: - Private

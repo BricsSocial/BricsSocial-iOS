@@ -16,6 +16,7 @@ final class SearchPageViewModel: ObservableObject {
     // Observed values
     @Published var state: LoadingState = .loading
     @Published var displayingVacancies: [Vacancy] = []
+    @Published var searchTags: String = ""
     
     // MARK: - Initialization
     
@@ -23,6 +24,16 @@ final class SearchPageViewModel: ObservableObject {
          companiesService: ICompaniesService) {
         self.vacanciesService = vacanciesService
         self.companiesService = companiesService
+    }
+    
+    func search() async {
+        guard !searchTags.isEmpty else { return }
+        
+        await vacanciesService.searchByKeyWord(searchTags)
+        
+        DispatchQueue.main.async {
+            self.displayingVacancies = self.vacanciesService.vacancies
+        }
     }
     
     func loadVacancies() async {

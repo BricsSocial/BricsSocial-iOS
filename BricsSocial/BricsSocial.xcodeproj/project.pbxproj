@@ -39,6 +39,7 @@
 		7B60E42329D58239003EFF14 /* ChangeReplyStatusRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B60E42229D58239003EFF14 /* ChangeReplyStatusRequest.swift */; };
 		7B60E42729D5CC85003EFF14 /* PhotoChangeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B60E42629D5CC85003EFF14 /* PhotoChangeRequest.swift */; };
 		7B60E42929D5D4E1003EFF14 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B60E42829D5D4E1003EFF14 /* Photo.swift */; };
+		7B60E42D29D6D815003EFF14 /* SearchFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B60E42C29D6D815003EFF14 /* SearchFieldView.swift */; };
 		7BBBEA6029CB5D0A00DC5072 /* SearchPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BBBEA5F29CB5D0A00DC5072 /* SearchPageView.swift */; };
 		7BBBEA6429CB619600DC5072 /* SearchPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BBBEA6329CB619600DC5072 /* SearchPageViewModel.swift */; };
 		7BBBEA6629CB62E300DC5072 /* StackCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BBBEA6529CB62E300DC5072 /* StackCardView.swift */; };
@@ -114,6 +115,7 @@
 		7B60E42229D58239003EFF14 /* ChangeReplyStatusRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeReplyStatusRequest.swift; sourceTree = "<group>"; };
 		7B60E42629D5CC85003EFF14 /* PhotoChangeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoChangeRequest.swift; sourceTree = "<group>"; };
 		7B60E42829D5D4E1003EFF14 /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
+		7B60E42C29D6D815003EFF14 /* SearchFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFieldView.swift; sourceTree = "<group>"; };
 		7BBBEA5F29CB5D0A00DC5072 /* SearchPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPageView.swift; sourceTree = "<group>"; };
 		7BBBEA6329CB619600DC5072 /* SearchPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPageViewModel.swift; sourceTree = "<group>"; };
 		7BBBEA6529CB62E300DC5072 /* StackCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackCardView.swift; sourceTree = "<group>"; };
@@ -423,6 +425,7 @@
 			children = (
 				7BBBEA6529CB62E300DC5072 /* StackCardView.swift */,
 				7BDEE3AC29CC212E00BB5E3D /* VacancyCardView.swift */,
+				7B60E42C29D6D815003EFF14 /* SearchFieldView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -821,6 +824,7 @@
 				7B60E42729D5CC85003EFF14 /* PhotoChangeRequest.swift in Sources */,
 				7BDFC0C429D31A96003DCB8C /* RepliesViewModel.swift in Sources */,
 				7B040F3729C9CF1700E3BC2E /* ProfilePhotoView.swift in Sources */,
+				7B60E42D29D6D815003EFF14 /* SearchFieldView.swift in Sources */,
 				7B1C899529D34643007C2842 /* RoundedCorner.swift in Sources */,
 				7BCCE1AE29D05DD400A8E5CE /* SpecialistInfoService.swift in Sources */,
 				7B040F3629C9CF1700E3BC2E /* ProfilePageHeaderView.swift in Sources */,

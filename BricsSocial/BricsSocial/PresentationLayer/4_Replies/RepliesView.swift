@@ -28,7 +28,7 @@ struct RepliesView: View {
     var body: some View {
         GeometryReader { proxy in
             ScrollView(.vertical, showsIndicators: false) {
-                LazyVStack {
+                VStack {
                     Text("Replies")
                         .font(.largeTitle.bold())
                     ForEach(viewModel.repliesViewModels) { viewModel in
