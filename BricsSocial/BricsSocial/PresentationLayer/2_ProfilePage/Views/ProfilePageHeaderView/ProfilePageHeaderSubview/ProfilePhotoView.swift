@@ -28,7 +28,7 @@ struct ProfilePhotoView: View {
                     image
                         .resizable()
                         .scaledToFill()
-                } else if phase.error != nil {
+                } else if phase.error == nil {
                     Image("DefaultAvatar")
                         .resizable()
                         .scaledToFill()

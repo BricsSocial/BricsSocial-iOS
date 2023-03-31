@@ -28,7 +28,7 @@ class BaseRequest {
     
     // Основной url для построения запросов
     var baseUrl: String {
-        return "http://158.160.37.250"
+        return "https://brics-social.ru"
     }
     
     // Тип запроса

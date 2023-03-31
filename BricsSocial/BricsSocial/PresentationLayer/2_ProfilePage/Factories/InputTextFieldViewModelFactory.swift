@@ -84,7 +84,7 @@ final class InputTextFieldViewModelFactory: IInputTextFieldViewModelFactory {
                                            textFieldContent: specialistInfo?.bio ?? "",
                                            iconName: String.bioIconName,
                                            textContentType: .name,
-                                           validation: dataValidationHandler.validateBio(rawBio:))
+                                           validation: { _ in return true })
         case .surname:
             return InputTextFieldViewModel(textFieldName: String.surnameFieldName,
                                            textFieldContent: specialistInfo?.lastName ?? "Last Name...",
