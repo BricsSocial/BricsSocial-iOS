@@ -6,11 +6,28 @@
 //
 
 import Foundation
+import SwiftUI
 
-enum ReplyStatus: Int, Codable {
+enum ReplyStatus: Int, Codable, CaseIterable {
     case pending
     case approved
     case rejected
+    
+    var raw: String {
+        switch self {
+        case .pending: return "pending"
+        case .approved: return "approved"
+        case .rejected: return "rejected"
+        }
+    }
+    
+    var color: Color {
+        switch self {
+        case .pending: return .yellow
+        case .approved: return .green
+        case .rejected: return .red
+        }
+    }
 }
 
 final class ReplyStatusChageRequest: BaseRequest {

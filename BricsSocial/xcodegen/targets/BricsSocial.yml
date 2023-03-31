@@ -1,0 +1,27 @@
+targets:
+  BricsSocial:
+    type: application
+    platform: iOS
+
+    sources:
+      - path: ../../BricsSocial
+
+    settings:
+      base:
+        # Build options
+        EXCLUDED_SOURCE_FILE_NAMES: $(inherited) tp_*.json Podfile.lock
+        # Deployment
+        TARGETED_DEVICE_FAMILY: 1
+        # Packaging
+        DEFINES_MODULE: YES
+        DEVELOPMENT_TEAM: Andrew Samarenko
+        # Search Paths
+        ALWAYS_SEARCH_USER_PATHS: NO
+        # Signing
+        CODE_SIGN_IDENTITY: $(inherited)
+        # Apple Clang - Language
+        GCC_C_LANGUAGE_STANDARD: gnu11
+        GENERATE_INFOPLIST_FILE: YES
+    postBuildScripts:
+      - script: "\"${PODS_ROOT}/SwiftLint/swiftlint\""
+        name: SwiftLint

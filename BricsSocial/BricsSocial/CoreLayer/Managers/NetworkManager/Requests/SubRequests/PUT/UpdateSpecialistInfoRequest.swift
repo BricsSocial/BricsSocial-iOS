@@ -31,12 +31,12 @@ final class UpdateSpecialistInfoRequest: BaseRequest {
     override var bodyParameters: [String : Any] {
         return [
             "id": specialist.id,
-            "firstName": specialist.firstName          as Any,
-            "lastName": specialist.lastName            as Any,
-            "bio": specialist.bio                      as Any,
-            "about": specialist.about                  as Any,
-            "skillTags": specialist.skillTags          as Any,
-            "photo": specialist.photo                  as Any
+            "firstName": specialist.firstName,
+            "lastName": specialist.lastName,
+            "bio": specialist.bio,
+            "about": specialist.about,
+            "skillTags": specialist.skillTags,
+            "photo": specialist.photo
         ].compactMapValues { $0 }
     }
 }

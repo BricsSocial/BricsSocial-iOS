@@ -11,15 +11,29 @@ final class SearchPageViewModel: ObservableObject {
     
     // Dependencies
     private let vacanciesService: IVacanciesService
+    private let companiesService: ICompaniesService
     
     // Observed values
     @Published var state: LoadingState = .loading
     @Published var displayingVacancies: [Vacancy] = []
+    @Published var searchTags: String = ""
     
     // MARK: - Initialization
     
-    init(vacanciesService: IVacanciesService) {
+    init(vacanciesService: IVacanciesService,
+         companiesService: ICompaniesService) {
         self.vacanciesService = vacanciesService
+        self.companiesService = companiesService
+    }
+    
+    func search() async {
+        guard !searchTags.isEmpty else { return }
+        
+        await vacanciesService.searchByKeyWord(searchTags)
+        
+        DispatchQueue.main.async {
+            self.displayingVacancies = self.vacanciesService.vacancies
+        }
     }
     
     func loadVacancies() async {
@@ -44,7 +58,7 @@ final class SearchPageViewModel: ObservableObject {
     }
     
     func getCompany(vacancy: Vacancy) -> Company? {
-        return vacanciesService.companiesById[vacancy.companyId]
+        return companiesService.companiesById[vacancy.companyId]
     }
 }
 

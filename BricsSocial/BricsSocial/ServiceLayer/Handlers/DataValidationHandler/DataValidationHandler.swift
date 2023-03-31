@@ -17,8 +17,6 @@ extension String {
 protocol IDataValidationHandler {
     // Валидация почтового адреса
     func validateEmail(rawEmail: String) -> Bool
-    // Валидация номера телефона
-    func validatePhone(rawPhone: String) -> Bool
     // Валидация имени или фамилии
     func validateNameOrSurname(rawValue: String) -> Bool
     // Валидация биографии
@@ -34,11 +32,6 @@ final class DataValidationHandler: IDataValidationHandler {
     func validateEmail(rawEmail: String) -> Bool {
         let emailPred = NSPredicate(format: String.selfMatchesFormat, String.emailRegex)
         return emailPred.evaluate(with: rawEmail) 
-    }
-    
-    func validatePhone(rawPhone: String) -> Bool {
-        let phonePred = NSPredicate(format: String.selfMatchesFormat, String.phoneRegex)
-        return phonePred.evaluate(with: rawPhone)
     }
     
     func validateNameOrSurname(rawValue: String) -> Bool {

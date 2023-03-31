@@ -15,52 +15,70 @@ struct ProfilePhotoView: View {
     @State var selectedItems: [PhotosPickerItem] = []
     
     var body: some View {
-        Image("DefaultAvatar")
-            .resizable()
-            .scaledToFill()
+        if let picked = viewModel.image {
+            Image(uiImage: picked)
+                .resizable()
+                .scaledToFill()
+                .frame(width: 100, height: 100)
+                .clipShape(Circle())
+                .overlay(overlay)
+        } else {
+            AsyncImage(url: URL(string: viewModel.profileImage ?? "")) { phase in
+                if let image = phase.image {
+                    image
+                        .resizable()
+                        .scaledToFill()
+                } else if phase.error != nil {
+                    Image("DefaultAvatar")
+                        .resizable()
+                        .scaledToFill()
+                } else {
+                    ProgressView()
+                }
+            }
             .frame(width: 100, height: 100)
             .clipShape(Circle())
-            .overlay(
-                    HStack {
-                        Spacer()
-                        VStack {
-                            Spacer()
-                            if viewModel.isEditing {
-                                PhotosPicker(selection: $selectedItems,
-                                             maxSelectionCount: 1,
-                                             matching: .images,
-                                             label: {
-                                    Image(systemName: "plus")
-                                        .bold()
-                                        .foregroundColor(Color.white)
-                                        .frame(width: 30, height: 30)
-                                        .background(Circle().foregroundColor(Color.green))
-                                })
-                                .onChange(of: selectedItems) { _ in
-                                    guard let photo = selectedItems.first else { return }
-                                    photo.loadTransferable(type: Data.self) { result in
-                                        switch result {
-                                        case .success(let data):
-                                            guard let data = data,
-                                                  let image = UIImage(data: data)
-                                            else { return }
-                                            // viewModel.saveProfileView(image)
-                                        case .failure(let error):
-                                            RootAssembly.coreAssembly.logger.log(.error, arguments: "failed to load profile picture",
-                                                                                 error.localizedDescription)
-                                        }
-                                    }
+            .overlay(overlay)
+        }
+    }
+    
+    private var overlay: some View {
+        HStack {
+            Spacer()
+            VStack {
+                Spacer()
+                if viewModel.isEditing {
+                    PhotosPicker(selection: $selectedItems,
+                                 maxSelectionCount: 1,
+                                 matching: .images,
+                                 label: {
+                        Image(systemName: "plus")
+                            .bold()
+                            .foregroundColor(Color.white)
+                            .frame(width: 30, height: 30)
+                            .background(Circle().foregroundColor(Color.green))
+                    })
+                    .onChange(of: selectedItems) { _ in
+                        guard let photo = selectedItems.first else { return }
+                        photo.loadTransferable(type: Data.self) { result in
+                            switch result {
+                            case .success(let data):
+                                guard let data = data,
+                                      let image = UIImage(data: data)
+                                else { return }
+                                DispatchQueue.main.async { [self] in
+                                    viewModel.image = image
                                 }
-                            } else {
-                                EmptyView()
+                            case .failure(let error):
+                                RootAssembly.coreAssembly.logger.log(.error, arguments: "failed to load profile picture",
+                                                                     error.localizedDescription)
                             }
                         }
                     }
-            )
-            .onAppear {
-                // viewModel.loadProfileView()
+                } else {
+                    EmptyView()
+                }
             }
-            .animation(.easeInOut, value: viewModel.profileImage)
+        }
     }
 }
-

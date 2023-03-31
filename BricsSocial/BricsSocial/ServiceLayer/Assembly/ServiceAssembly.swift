@@ -20,16 +20,22 @@ protocol IServiceAssembly {
     var authService: IAuthService { get }
     // Сервис для работы с заявками
     var vacanciesService: IVacanciesService { get }
+    // Сервис для работы с компаниями
+    var companiesService: ICompaniesService { get }
+    // Сервис для работы с заявками
+    var repliesService: IRepliesService { get }
 }
 
 final class ServiceAssembly: IServiceAssembly {
     
     lazy var dataValidationHandler: IDataValidationHandler = DataValidationHandler()
-    lazy var profileImageHandler: IProfileImageHandler = ProfileImageHandler(localFileManager: RootAssembly.coreAssembly.localFileManager)
+    lazy var profileImageHandler: IProfileImageHandler = ProfileImageHandler(localFileManager: RootAssembly.coreAssembly.localFileManager, networkHandler: networkHandler)
     lazy var tokenHandler: ITokenHandler = TokenHandler(keyChainManager: RootAssembly.coreAssembly.keyChainManager)
     lazy var networkHandler: INetworkHandler = NetworkHandler(tokenHandler: tokenHandler, networkManager: RootAssembly.coreAssembly.networkRequestsManager)
     
     lazy var specialistInfoService: ISpecialistInfoService = SpecialistInfoService(networkHandler: networkHandler)
     lazy var authService: IAuthService = AuthService(tokenHandler: tokenHandler, networkHandler: networkHandler)
-    lazy var vacanciesService: IVacanciesService = VacanciesService(networkHandler: networkHandler)
+    lazy var vacanciesService: IVacanciesService = VacanciesService(networkHandler: networkHandler, companiesService: companiesService)
+    lazy var companiesService: ICompaniesService = CompaniesService(networkHandler: networkHandler)
+    lazy var repliesService: IRepliesService = RepliesService(networkHandler: networkHandler, companiesService: companiesService)
 }

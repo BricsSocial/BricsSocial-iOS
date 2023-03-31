@@ -25,7 +25,8 @@ final class ProfilePageViewModel: ObservableObject {
     @Published var state: LoadingState = .loading
     
     // Input Data
-    @Published var profileImage: UIImage?
+    @Published var profileImage: String?
+    @Published var image: UIImage?
 
     // General Field Texts
     @Published var skillsFieldText : String  = String()
@@ -38,7 +39,6 @@ final class ProfilePageViewModel: ObservableObject {
     @Published var nameFieldText   : String  = String()
     @Published var surnameFieldText: String  = String()
     @Published var mailFieldText   : String  = String()
-    @Published var phoneFieldText  : String  = String()
     @Published var country         : Country = .brasil
     
     // Computed Properties
@@ -52,7 +52,6 @@ final class ProfilePageViewModel: ObservableObject {
         if !nameFieldText.isEmpty { validationArray.append(dataValidationHandler.validateNameOrSurname(rawValue: nameFieldText)) }
         if !surnameFieldText.isEmpty { validationArray.append(dataValidationHandler.validateNameOrSurname(rawValue: surnameFieldText)) }
         if !mailFieldText.isEmpty { validationArray.append(dataValidationHandler.validateEmail(rawEmail: mailFieldText)) }
-        if !phoneFieldText.isEmpty { validationArray.append(dataValidationHandler.validatePhone(rawPhone: phoneFieldText)) }
         if !bioFieldText.isEmpty { validationArray.append(dataValidationHandler.validateBio(rawBio: bioFieldText)) }
         
         return validationArray.allSatisfy { $0 }
@@ -72,13 +71,14 @@ final class ProfilePageViewModel: ObservableObject {
     
     func resetUserInfo() {
         skillsFieldText  = String()
+        profileImage = cachedSpecialistInfo?.photo
+        image = nil
         tags             = cachedSpecialistInfo?.skillTags?.split(separator: ",").map { Tag.makeTag(from: String($0)) } ?? []
         bioFieldText     = String()
         descriptionText  = cachedSpecialistInfo?.about ?? ""
         nameFieldText    = String()
         surnameFieldText = String()
         mailFieldText    = String()
-        phoneFieldText   = String()
         country          = cachedSpecialistInfo?.countryId ?? .brasil
     }
     
@@ -97,7 +97,6 @@ final class ProfilePageViewModel: ObservableObject {
         let bio       = bioFieldText.nilIfEmpty()
         let about     = descriptionText.nilIfEmpty()
         let skillTags = tags.map { $0.text }.joined(separator: ",")
-        let photo: String? = nil // доделать позднее
         let countryId = country
         
         return Specialist(id: id,
@@ -107,7 +106,7 @@ final class ProfilePageViewModel: ObservableObject {
                           bio: bio,
                           about: about,
                           skillTags: skillTags,
-                          photo: photo,
+                          photo: nil,
                           countryId: countryId)
     }
     
@@ -143,9 +142,14 @@ extension ProfilePageViewModel: LoadableObject {
         }
     }
     
+    func uploadPhoto(image: UIImage) async {
+        let error = await profileImageHandler.uploadProfilePicture(specialistId: cachedSpecialistInfo?.id ?? 0, image: image)
+    }
+    
     func save() async -> NetworkError? {
         guard let specialistInfo = makeSpecialistModel() else { fatalError("Unexpected failure") }
         
+        if let image = image { await uploadPhoto(image: image) }
         let error = await specialistInfoService.updateSpecialistInfo(specialist: specialistInfo)
         
         DispatchQueue.main.async { [weak self] in

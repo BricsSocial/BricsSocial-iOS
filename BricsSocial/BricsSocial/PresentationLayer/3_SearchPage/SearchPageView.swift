@@ -9,7 +9,8 @@ import SwiftUI
 
 struct AsyncSearchPageView: View {
     
-    @StateObject var viewModel: SearchPageViewModel = SearchPageViewModel(vacanciesService: RootAssembly.serviceAssembly.vacanciesService)
+    @StateObject var viewModel: SearchPageViewModel = SearchPageViewModel(vacanciesService: RootAssembly.serviceAssembly.vacanciesService,
+                                                                          companiesService: RootAssembly.serviceAssembly.companiesService)
     
     var body: some View {
         AsyncContentView(source: viewModel, content: {
@@ -25,12 +26,14 @@ struct SearchPageView: View {
         GeometryReader() { geometry in
             ScrollView(showsIndicators: false) {
                 VStack {
-                    Text("BRICS")
-                        .font(.title.bold())
+                    SearchFieldView()
+                        .padding(.top, 10)
+                        .padding(.horizontal)
+                        .environmentObject(viewModel)
                     ZStack {
                         if let vacancies = viewModel.displayingVacancies {
                             if vacancies.isEmpty {
-                                Text("Come back later we can find more companies for you")
+                                Text("Come back later we can find more vacancies for you")
                                     .font(.caption)
                                     .foregroundColor(.gray)
                             } else {
@@ -43,9 +46,8 @@ struct SearchPageView: View {
                             ProgressView()
                         }
                     }
-                    .padding(.vertical)
-                    .padding(.top, 30)
-                    .padding()
+                    .padding(.top, 20)
+                    .padding(.horizontal)
                     .frame(height: geometry.size.height - 150)
                     
                     HStack(spacing: 15) {
@@ -84,6 +86,7 @@ struct SearchPageView: View {
         .refreshable {
             Task { await viewModel.loadVacancies() }
         }
+        .ignoresSafeArea(.keyboard)
     }
     
     func doSwipe(rightSwipe: Bool = false) {
