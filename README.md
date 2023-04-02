@@ -8,6 +8,7 @@ Application was developed as part of the team-project: **"Brics Social"**. The m
   <img src="Additional/screenshots/replies.png" height="400"/>
   <img src="Additional/screenshots/profile_summary.png" height="400"/>
 </p>
+
 ***
 ### **Functions:**
 * You can swipe right to leave a request for the desired vacancy or left to skip irrelevant offer
