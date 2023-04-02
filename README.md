@@ -2,10 +2,12 @@
 ### **Introduction:**
 Application was developed as part of the team-project: **"Brics Social"**. The main goal is to facilitate job search and recruitment process in BRICS countries.
 ***
-<img src="Additional/screenshots/search.png" height="400" />
-<img src="Additional/screenshots/replies.png" height="400"/>
-<img src="Additional/screenshots/profile_summary.png" height="400"/>
 
+<p float="left">
+  <img src="Additional/screenshots/search.png" height="400" />
+  <img src="Additional/screenshots/replies.png" height="400"/>
+  <img src="Additional/screenshots/profile_summary.png" height="400"/>
+</p>
 ***
 ### **Functions:**
 * You can swipe right to leave a request for the desired vacancy or left to skip irrelevant offer
